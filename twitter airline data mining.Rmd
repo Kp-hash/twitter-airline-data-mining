@@ -1,0 +1,876 @@
+---
+title: "Twitter data mining of airline related tweets"
+author: "LATEEF MUIZZ KOLAPO"
+date: "1/21/2021"
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+set.seed(1234)
+```
+                                                       
+ReadMe<br/>
+(1) For optimum performance of the code below ensure the following packages and libraries are installed and loaded to your Workspace.<br/>
+
+* tidytext
+* stringr
+* tidytext
+* textdata
+* stats
+* reshape2
+* modeltools
+* topicmodels
+* tm
+* widyr
+* anytime
+* rtweet
+* leaflet
+* lubridate
+* lutz
+* glue
+* scales
+* twitteR
+* wordcloud
+* igraph
+* ggraph
+
+
+(2) Ensure you run the code from Top to bottom as the content of the variable  might change depending on the line of code been worked on.<br/>
+
+
+# Loading all packages needed using the package manager
+<br/>
+Package manager is a package that helps installs and load r packages when needed without having to call each package individually using the library function.
+```{r}
+#loading package manager
+require(pacman)
+#using p_load function to load all packages used
+pacman::p_load(tidyverse,tidytext,stringr,tidytext,textdata,stats,
+               reshape2,modeltools,topicmodels,tm,widyr,anytime,rtweet,
+               leaflet,lubridate,lutz,glue,scales,twitteR,wordcloud,igraph,ggraph)
+```
+
+
+
+# Problem statement
+<br/>
+Four tasks were performed on the airline tweet dataset provided including Text mining, Sentiment Analysis, Topic Model and Additional Exploratory Analysis. The R software environment was used to perform the four tasks.   
+ 
+# Task A: Text Mining
+                                                            
+
+### loading the dataset
+<br/>
+The output shows we have 9 columns and 3,339 rows in the dataset, this means we have 3,339 tweets about United and Virgin America arline. Each row in the dataset represents a tweet and the primary key or identifier for the dataset is the Tweet_id column.
+```{r}
+#Loading the data into variable airline_data
+airline_data <- read_csv("airline.csv")
+#previewing the dataset
+airline_data 
+
+```
+
+
+### Plotting the tweets per hour
+<br/>
+The ts_plot() function from the rtweet package enables us to plot the frequency of tweets over a variety of time intervals (e.g. “secs”, “mins”, “hours”, “days”, “weeks”, “months”, “years”) in a ggplot2 plot. The output shows that we have the highest number of tweets coming in on February 20 and 23.
+```{r}
+#Converting the tweet_created variable to a time object using anytime() function
+airline_time <- airline_data %>%  mutate(time_conv = anytime(airline_data$tweet_created)) %>% na.omit()
+airline_time
+#using the timeseries plot object to plot the dataset
+ts_plot(airline_time, "hours",col="#5cc2f2") +
+  labs(x = NULL, y = NULL,
+       title = "Frequency of the airline tweets - Daily interval",
+       subtitle = paste0(format(min(airline_time$time_conv), "%d %B %Y"), " to ", format(max(airline_time$time_conv),"%d %B %Y")),
+       caption = "source: Tweets about Virgin America and United Airline") 
+  
+```
+
+
+### Plotting the tweets by location
+<br/>
+ggplot was used to plot the total count of tweets based on the user locations, from the output we can see we have the highest amount of tweets from San Francisco, CA and the least amount of tweet from other users tagged as Global. We removed the null values from the dataset using the is.na() function.
+```{r}
+#create variable airline_top_loc for top ten tweeting locations
+airline_top_loc <- airline_data %>% 
+  filter(!is.na(tweet_location)) %>% 
+  count(tweet_location, sort = TRUE) %>% 
+  top_n(10) 
+ggplot(airline_top_loc,aes(x = tweet_location, y = n, fill=tweet_location)) + geom_col() + coord_flip() + ggtitle("Tweet count based on user locations")
+```
+
+### Getting the most retweeted tweet in the entire dataset
+<br/>
+Twitter dataset contains the column  “retweet_count”  whose values shows us the retweet count of a particular tweet in our dataset. Retweet count is the number of times a particular tweet was reshared by other users. Here we sort all the tweets in descending order by the size of the “retweet_count”, slice off the top row and print the details. We can see the user @FreyaBevan_Fund seems to be our most influential user in the entire dataset.
+
+```{r}
+#create a variabe airline_rt to hold the tweet with the highest retweet
+airline_rt <- airline_data %>% 
+  arrange(-retweet_count) %>%
+ slice(1) %>% 
+  select(tweet_created, text, retweet_count,airline,tweet_id)
+
+airline_rt
+```
+
+### Getting the most used hashtags in the entire dataset
+<br/>
+We pull the most used hashtags in our dataset the text was converted into a one word per row format using the unnest_tokens() function from the tidytext package. We added the parameters hashtag to specify our search for hashtags within the tweets. The hashtags were selected, counted and sorted in a descending order and we picked the top 10 hashtags used. The output shows us that hashtags with united at the forefront were the most used which is expected, we can see that customer service is the other top hashtags used which is also not surprising since people mostly tweet at service providers to make complaint. 
+
+```{r}
+#extract most used airline hashtags and remove null values
+airline_hash<- airline_data %>% na.omit() %>% 
+  unnest_tokens(hashtag, text, "tweets", to_lower = FALSE) %>%
+  #filter for hashtags only in the text
+  filter(str_detect(hashtag, "^#")) %>%
+  count(hashtag, sort = TRUE) %>% 
+  top_n(10) 
+#plot the top ten hashtags used
+  ggplot(airline_hash,aes(x = hashtag, y = n, fill=hashtag)) + geom_col() + coord_flip() + ggtitle("Tweet Word count for all airline")
+```
+
+
+### summarizing the dataset
+<br/>
+The data was grouped into the two different airlines and we can see that United airline has 2884 rows of data, Virgin America has 454 and we have a missing group NA, this would be removed. This means in our dataset United has around 70% of the entire dataset.
+```{r}
+#count by airline type
+airline_data %>%
+  group_by(airline) %>%
+  summarise(number_t = n())
+```
+
+### removing null category from the dataset
+<br/>
+Removing the null value from the variable by filtering for just united and virgin America because using na.omit(). This would remove all rows with occurrence of any null value and we do not want this, we only want to remove the row where the airline is unavailable.
+
+```{r}
+#filter for tweets about just United and Virgin America this remove other groups
+airline_data <- airline_data %>% filter(airline %in% c("United","Virgin America"))
+#create variable air_count for airline count
+air_count <- airline_data %>%
+  group_by(airline) %>%
+  summarise(number_t = n())
+
+#plot tweet count by airline
+ggplot(air_count, aes(x = airline, y = number_t, fill=airline)) + geom_col() + coord_flip() + ggtitle("Tweet Word count for all airline")
+
+```
+
+###  Tokenizing the data: Breaking the tweet into bag of words
+<br/>
+We tokenized the data by breaking each tweet or row into its own individual bag of words and each word in the tweet would be tokenized. This process helps make our dataset easier to analyze and helps convert the text into categorical datasets. As seen in the word column of the  tidy_airline_unnested dataframe, each row now belongs to a tokenized term. We added a custom column "id" to the dataset so we can track the words that belongs to each tweet. The number of rows in the dataset has exploded from 3,339 rows to 58,563 rows. We would need to remove the stop words in this data to proceed with our analysis.  We can see United is the most used term in the entire dataset which is expected and as such we would call this and terms such as virgin america stop words which will be removed.
+```{r}
+#------------------------------------------------------
+tidy_airline_unnested <- airline_data %>%
+  #break text into component terms
+  mutate(id = row_number()) %>%
+  unnest_tokens(word,text)
+
+#we will now do a count of words in the entire corpus(collection of documents)
+tidy_airline_unnested %>%
+  count(word) %>%
+  arrange(desc(n))
+```
+
+###  Removing stop words from the document
+<br/>
+We would be removing stop words from the dataset, these are words which are commonly used and would not add much to the emotional valence of our analysis. After using the anti-join to remove  the stop words by returning words in our document not in the stop words, we notice the total number of rows reduced from 58,563 to 27,151 rows. The output still shows we have terms like united,virginamerica, t.co and http present which based on our rule of thumb for removing words (i.e if a word adds value to the emotional valence of the analysis) we will be removing them using a custom stop words we create using the tribble() function.
+```{r}
+#create a new data that we have removed all stop words, we use the anti join method to sieve out the stop words in the data
+tidy_airline_stop_words <- tidy_airline_unnested %>%
+  anti_join(stop_words)
+
+#perform a count on the new data in descending order
+tidy_airline_stop_words %>%
+  count(word) %>%
+  arrange(desc(n))
+```
+
+### Plotting the top word counts.
+<br/>
+We plotted the top word counts in the dataset with counts greater than 80. This gives us an idea of what we have present in the dataset. From the plot  we can see that United has the most occurrence among all the terms in the dataset and also virginamerica has a very high occurrence too. These two words should be considered as part of the stop words in this data as explained above.
+```{r}
+#get word count
+word_counts <- tidy_airline_stop_words %>%
+  count(word) %>%
+  #sort in descending order
+  arrange(desc(n))
+
+#plot the word count
+word_counts %>%
+  filter(n> 80) %>%
+  arrange(desc(n))%>%
+ggplot( aes(x = word, y = n)) + geom_col() + coord_flip() + ggtitle("Tweet Word count")
+```
+
+### Creating custom stop words
+<br/>
+The output above show we have some words that are not important to us having a high frequency. Terms like united,virginaamerica and t.co. We will be creating a custom stop word dataframe to remove this. Using tribble() function which is customized for data entry in code we create a list object containing our custom stop. The outcome below shows that the original list of stop words now includes our custom stop words, and we can now proceed with rerunning the anti-join process. In this task we used the bind_rows instead of rbind because in cases where there are NA values in the dataset rbind might return errors.
+Steps:<br/>
+- Create a list of custom words using the tribble function <br/>
+- Perform a row-wise join between the custom stop words and the original stop words<br/>
+- Run the anti-join process between the new stop words and the terms in the dataset.<br/>
+
+```{r}
+#create the custom stop words using tribble()
+custom_stop_words <- tribble(
+  ~word, ~lexicon,
+  "virginamerica", "CUSTOM",
+  "united", "CUSTOM",
+  "t.co", "CUSTOM",
+  "http", "CUSTOM",
+  "2", "CUSTOM",
+  "3", "CUSTOM"
+)
+#row-wisw join of custom stop words and original stop words
+stop_words2 <- stop_words %>%
+  bind_rows(custom_stop_words)
+#confirm our bind was successful
+stop_words2 %>% filter(word %in% c("t.co"))
+stop_words2 %>% filter(word %in% c("virginamerica"))
+stop_words2 %>% filter(word %in% c("united"))
+```
+
+
+### Removing stop words using  custom stop words
+<br/>
+We will be using the new stop words to remove the custom stop words in the dataset. The outcome below shows that the number of rows as reduced to around 20,000 which is as a result of our Anti-join process.
+
+```{r}
+#using mutate to create a custom id for each row in the data, unnest to break the text column into the component words and put into new column word.
+tidy_airline_stop_words <- airline_data %>%
+  mutate(id = row_number()) %>%
+  unnest_tokens(word,text) %>%
+  anti_join(stop_words2)
+tidy_airline_stop_words
+```
+
+### Replotting the word counts
+<br/>
+After removing the stop words and custom stop words from the dataset we plotted the data as seen below. The outcome below shows the plot in an orderly manner and we can see that flight is the most used term.
+
+```{r}
+#creating an ordered plot we will use factor ordering and mutate to order our data by the count of words
+word_counts2 <- tidy_airline_stop_words %>%
+  count(word) %>%
+  mutate(word2 = fct_reorder(word,n))
+word_counts2
+#using word count data to plot the word count seen below and filter for word counts greater than 80 
+word_counts2 %>%
+  filter(n> 80) %>%
+  arrange(desc(n))%>%
+ggplot( aes(x = word2, y = n)) + geom_col() + coord_flip() + ggtitle("Tweet Word count for all airline") 
+
+```
+
+### Splitting the word usage by airline
+<br/>
+We have two groups of users in our dataset, people tweeting about United Airlines and those tweeting about Virgin America airlines. We will be splitting the word usage into two datasets, United airline and Virgin America airline. We successfully split our tidy data into the two groups of airline in the data by using the filter function. we now have 3 dataset, united_tidy, virgin_tidy and tidy_airline_stop_words.
+<br/>
+united_tidy - holds the tweet data of users tweeting about United Airlines <br/>
+virgin_tidy - holds the tweet data of users tweeting about Virgin America Airlines<br/>
+tidy_airline_stop_words - holds the cleaned dataset for the two groups joined together.<br/>
+
+```{r}
+united_tidy <- tidy_airline_stop_words %>% filter(airline=='United') 
+virgin_tidy <- tidy_airline_stop_words %>% filter(airline=='Virgin America')
+
+```
+
+
+### Plotting Word count by airline
+<br/>
+We will be exploring the two groups in our dataset with a word count plot of the individual groups. We notice that for both group the term "flight" has the highest occurrence which is expected since the dataset is about airlines. We might be tempted to remove this word from our data and categorize it as a stop word but based on our rule of thumb we stated earlier(removing only words that adds no emotional valence) we would keep the term in our data since it helps in knitting together the story about our dataset.
+```{r}
+#plotting the terms with a word count greater than 60 for united airlines
+united_tidy %>%
+  count(word) %>%
+  mutate(word2 = fct_reorder(word,n)) %>%
+  filter(n> 60)  %>%
+  arrange(desc(n))%>%
+  ggplot(aes(x = word2,y = n)) +
+  geom_col() +
+  coord_flip() +
+      labs(x = "Location",
+      y = "Count",
+      title = "Word count for Virgin America Airlines United Airlines")
+#plotting the terms with a word count greater than 60 for Virgin America airlines
+virgin_tidy %>%
+   count(word) %>%
+  mutate(word2 = fct_reorder(word,n)) %>%
+  filter(n> 10)  %>%
+  arrange(desc(n))%>%
+  ggplot(aes(x = word2,y = n)) +
+  geom_col() +
+  coord_flip() +
+      labs(x = "Location",
+      y = "Count",
+      title = "Word count for Virgin America Airlines")
+
+```
+
+### Plotting twitter user locations
+<br/>
+We will be exploring our the tweets from the users based on their location. From the 3 plots below we can see we can see for the known locations of user Eastern Time(US & Canada), Central Time(US & Canada) and Pacific Time (US & Canada) are the contributing timezones to the dataset.
+
+```{r}
+#Plotting user locations for the entire dataset
+tidy_airline_stop_words %>%
+  count(user_timezone) %>%
+  mutate(user_timezone2 = fct_reorder(user_timezone,n)) %>%
+  filter(n> 50)  %>%
+  arrange(desc(n))%>%
+  ggplot(aes(x = user_timezone2,y = n)) +
+  geom_col() +
+  coord_flip() +
+      labs(x = "Location",
+      y = "Count",
+      title = "Twitter users - unique locations All airlines ")
+```
+
+```{r}
+
+#Plotting user locations for tweets about united airlines
+united_tidy %>%
+  count(user_timezone) %>%
+  mutate(user_timezone2 = fct_reorder(user_timezone,n)) %>%
+  filter(n> 50)  %>%
+  arrange(desc(n))%>%
+  ggplot(aes(x = user_timezone2,y = n)) +
+  geom_col() +
+  coord_flip() +
+      labs(x = "Location",
+      y = "Count",
+      title = "Twitter users - unique locations United Airlines")
+```
+
+```{r}
+#Plotting user locations for tweets about Virgin america airlines
+virgin_tidy %>%
+  count(user_timezone) %>%  
+  mutate(user_timezone2 = fct_reorder(user_timezone,n)) %>%
+  filter(n> 50)  %>%
+  arrange(desc(n))%>%
+  ggplot(aes(x = user_timezone2,y = n)) +
+  geom_col() +
+  coord_flip() +
+      labs(x = "Location",
+      y = "Count",
+      title = "Twitter users - unique locations Virgn Airlines")
+```
+
+
+### Plotting The word cloud for the 3 dataset
+<br/>
+We will be plotting the word cloud using the wordcloud function. We will be plotting the wordcloud for the three dataset, tidy_airline_stop_words, united_wc and  virgin_wc. The 3 wordclouds shows us the dominance of the flight term in the dataset.
+
+```{r}
+#World cloud for entire dataset
+All_wc <- tidy_airline_stop_words %>% 
+  count(word)
+#use wordcloud function to plot the wordcloud
+wordcloud(words = All_wc$word, freq = All_wc$n, min.freq = 1,
+          max.words=100, random.order=FALSE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"))
+
+```
+
+```{r}
+#plot word cloud for united airlines
+united_wc <- united_tidy %>% 
+  count(word)
+
+wordcloud(words = united_wc$word, freq = united_wc$n, min.freq = 1,
+          max.words=100, random.order=FALSE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"))
+```
+
+```{r}
+#plot word count for Virgin America airlines
+virgin_wc <- virgin_tidy %>% 
+  count(word)
+
+wordcloud(words = virgin_wc$word, freq = virgin_wc$n, min.freq = 1,
+          max.words=100, random.order=FALSE, rot.per=0.25, 
+          colors=brewer.pal(8, "Dark2"))
+
+```
+                                                    
+# Task B: Sentiment Analysis 
+In this section we will be exploring the sentiments of the tweets in our dataset and try to draw insights from this texts.
+
+## Performing sentiment analysis on the data
+<br/>
+We will be performing sentiment analysis on the entire dataset. This would be done by removing the existing sentiment column in the dataset and create a new one.
+
+### Using Bing dictionary
+We will be performing the sentiment analysis using the Bing to classify the words in our dataset into emotions as classified by the dictionaries. We see the top contributing words to the positive and negative sentiments in the dataset. The highest term used for positive sentiments as grouped by the bing library is "love", while the top word used in negative sentiment was in delayed, lost and miss. This tells us that most of the complaint in the dataset was about delayed flight, lost luggages and missed flights. 
+```{r}
+airline_new_bing <- 
+#removing existing sentiment in data
+  select(tidy_airline_stop_words, -sentiment) %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(word, sentiment,tweet_id,id, sort=TRUE)%>%
+  ungroup()
+
+#bing sentiments by sentiment group
+ bing_sent <- airline_new_bing %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(word,sentiment, sort=TRUE) %>%
+  group_by(sentiment) %>%
+  top_n(10,n) %>%
+  ungroup() %>%
+  mutate(word2 = fct_reorder(word, n))
+   #use ggplot to plot sentiment word count
+    ggplot(bing_sent, aes(x=word2,y=n, fil=sentiment)) +
+    geom_col(show.legend = FALSE) +
+    facet_wrap(~sentiment, scales="free") +
+    coord_flip() + 
+    labs(
+      title = "Sentiment Word counts",
+      x = "Words"
+    )
+```
+
+### plotting word counts by overall sentiment 
+
+We used the mutate function to perform some calculations on the dataset, we subtracted negative emotions from the positive ones to give the overall sentiment for each of the airlines. We discovered that the overall sentiments towards united airline in this dataset is negative while that of Virgin America is positive, this can give us an idea of the difference between the two airlines. Based on this subset of data we can assume Virgin America customers enjoy a better service on average than those using the united airline, since we have fewer observations for the Virgin America to that of United Airlines it would be unfair to compare the two based on this dataset.
+
+```{r}
+#-------------------------------------------------
+#Bing overall sentiment analysis of document by airline
+bing_overall <- select(tidy_airline_stop_words, -sentiment) %>% inner_join(get_sentiments("bing")) %>%
+  count(airline,sentiment) %>%
+  spread(sentiment, n) %>%
+  mutate(summed_sentiment = positive - negative)
+
+#visualize sentiment by airli e
+ggplot(bing_overall,
+  aes(x = airline, y= summed_sentiment, fill = as.factor(airline))
+) + 
+  geom_col(show.legend = FALSE) +
+  coord_flip() +
+  labs(
+    title = "Overall sentiment by Airline",
+    x = "Airline",
+    y = "Summed Sentiment"
+  )
+```
+
+### plotting overall sentiment based on user time zone.
+
+We plotted the overall sentiments based on the user time zones in the dataset. The output revealed that the overall experience of users from all the user timezone in the dataset is negative apart from users in the pacific Time(US & Canada) and Central Time(Us &Canada) this is not suprising since users in this timezone have a higher amount of tweets in the dataset.
+```{r}
+#-----------------------------------------------
+#sentient by location
+bing_loc <- select(tidy_airline_stop_words, -sentiment) %>% inner_join(get_sentiments("bing")) %>%
+  count(user_timezone,airline,sentiment) %>%
+  spread(sentiment, n) %>%
+  mutate(summed_sentiment = positive - negative) %>%
+  na.omit() 
+#visualize sentiment by airli e
+ggplot(bing_loc,
+  aes(x = user_timezone, y= summed_sentiment, fill = as.factor(user_timezone))
+) + 
+  geom_col(show.legend = FALSE) +
+  coord_flip() +
+  labs(
+    title = "Overall sentiment by Time zone",
+    x = "User timezone",
+    y = "Summed Sentiment"
+  )
+```
+
+###  plotting the top 30 words contributing to the sentiments in the dataset
+
+The output shows that in the entire dataset only two positive words(Love and refund) have a count greater than 30 in the dataset. Words like delayed, miss, loss are the contributors for the negative expereince. This is expected as this terms are only used for bad service experience.
+```{r}
+#bing top 30 sentiments
+airline_new_bing %>%
+  count(sentiment, word, wt = n) %>%
+  ungroup() %>%
+  filter(n >= 30) %>%
+  mutate(n = ifelse(sentiment == "negative", -n, n)) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n, fill = sentiment)) +
+  #we used stat = identity since we are providing y values
+  geom_bar(stat = "identity") +
+  ylab("Contribution to sentiment") +
+  coord_flip()  +
+  labs(
+    title = "Overall word sentiment by contribution",
+    x = "Word"
+  )
+```
+
+
+
+###  Using NRC dictionary
+
+We will be performing the sentiment analysis using the nrc dictionary to classify the words in our dataset into emotions as classified by the dictionaries. The output shows this dictionary contains more sentiment groupings than the Bing dictionary.  
+     
+```{r}
+airline_new_nrc <- 
+#removing existing sentiment in data
+  select(tidy_airline_stop_words, -sentiment) %>%
+  inner_join(get_sentiments("nrc")) %>%
+  count(word, sentiment,tweet_id,id, sort=TRUE)%>%
+  ungroup()
+
+#NRC sentiments by sentiment group
+ nrc_sent <- airline_new_nrc %>%
+  inner_join(get_sentiments("nrc")) %>%
+  count(word,sentiment, sort=TRUE) %>%
+  group_by(sentiment) %>%
+  top_n(5,n) %>%
+  ungroup() %>%
+  mutate(word2 = fct_reorder(word, n))
+    
+ #visualize nrc sentiment word count
+    ggplot(nrc_sent, aes(x=word2,y=n, fill=sentiment)) +
+    geom_col(show.legend = FALSE) +
+    facet_wrap(~sentiment, scales="free") +
+    coord_flip() + 
+    labs(
+      title = "Sentiment Word counts for NRC",
+      x = "Words"
+    )
+```
+
+<br/>
+
+We plotted the sentiment by airline for NRC and we can see that Virgin America has more positive sentiments than United airlines.
+
+```{r}
+ #NRC sentiment analysis of document by airline
+nrc_overall <- select(tidy_airline_stop_words, -sentiment) %>% inner_join(get_sentiments("nrc")) %>%
+  count(airline,sentiment) %>%
+  spread(sentiment, n) %>%
+  mutate(summed_sentiment = (positive) - (negative))
+#visualize sentiment by airline
+ggplot(nrc_overall,
+  aes(x = airline, y= summed_sentiment, fill = as.factor(airline))
+) + 
+  geom_col(show.legend = FALSE) +
+  coord_flip() +
+  labs(
+    title = "Overall sentiment by Airline",
+    x = "Airline",
+    y = "Summed Sentiment"
+  )
+```
+
+###  Comparing the bing sentiment to the nrc sentiment added
+The output shows us that for the bing dictionary United airline has a negative overall sentiment while Virgin America airlines had just a small overall positive sentiment.  The NRC shows that both United and Virgin America airlines had positive overall sentiment.
+<br/>
+```{r}
+#create the bing dataset
+bing_c <- select(tidy_airline_stop_words, -sentiment) %>%
+  inner_join(get_sentiments("bing")) %>%
+  mutate(method = "Bing et al.")
+#create the nrc dataset
+nrc_c <- select(tidy_airline_stop_words, -sentiment) %>%
+  inner_join(get_sentiments("nrc")) %>%
+  filter(sentiment %in% c("positive", "negative")) %>%
+  mutate(method = "NRC") 
+#bind the two variables
+bing_nrc <- bind_rows(bing_c,nrc_c)
+
+
+#spread the dataset based on sentiment and perform overall sentiment calculation
+bing_nrc <- bing_nrc %>%
+            count(method, airline , sentiment) %>%
+  spread(sentiment, n, fill = 0) %>%
+  mutate(sentiment = positive - negative)
+
+#plot the data  
+bing_nrc %>%
+  ggplot(aes(airline, sentiment, fill = airline)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~method, ncol = 1, scales = "free")
+```
+
+
+###  Comparing the original sentiment to the new sentiment added
+<br/>
+We will be comparing the sentiment in the initial dataset to the new one created with the bing dictionary. We used innerjoin to match all the dataset we have in the bing sentiment data to the original since due to the usage of stop words and other data processing we have dropped some rows. So we want to see rows in the new sentiment data that does not have the same sentiment as the original dataset. We created a final dataset for all non matching rows of data between the two datasets.
+
+```{r}
+select(tidy_airline_stop_words, sentiment,id,tweet_id,word) %>% count(word, sentiment,tweet_id,id, sort=TRUE)%>%
+  ungroup() -> original_sentiment 
+original_sentiment <-  original_sentiment %>%  mutate(method = "Original")
+airline_new_bing <-airline_new_bing %>%  mutate(method = "New")
+#joining original sentiment in data to the sentiment from bing dictionary
+original_vs_bing <- inner_join(original_sentiment, airline_new_bing, by=c("word","tweet_id"))
+#selecting all rows where sentiment not the same for the two methods
+non_matching_sent <- original_vs_bing %>% filter(sentiment.x != sentiment.y)
+non_matching_sent
+
+```
+
+
+###  Plotting the sentiments over time
+<br/>
+We created a new variable called daily_sent which holds the sentiment trend per day. We used the anytime function to convert the tweet_created column to a time object. We then used the time formatting as.POSIXct to format the date and extracted the day from the dataset into a new column called day. We then performed a calculation subtracting negative sentiments from positive this was assigned to the variable daily_sent. We assigned this  new dataset into the ggplot function while filtering for values greater than or lesser than -2 or greater than zero. The daily trend for both airlines seems to follow a gradual and descending trend between 18th and 22nd of February and starts picking up from 23rd to the 24th.
+
+```{r}
+# plot of sentiment over time & automatically choose a method to model the change
+select(tidy_airline_stop_words, -sentiment) %>%mutate(time_conv = anytime(tidy_airline_stop_words$tweet_created)) %>% na.omit() %>% mutate(day =format(as.POSIXct(tweet_created,format="%Y-%m-%d %H:%M:%OS"),"%d")) %>%  inner_join(get_sentiments("bing")) %>%
+  count(airline,sentiment,day) %>%
+  spread(sentiment, n) %>% 
+  mutate(summed_sentiment = positive - negative) %>%  na.omit()-> daily_sent
+
+
+daily_sent %>% filter(summed_sentiment >0 | summed_sentiment < -2) %>% 
+ggplot(aes(x = as.numeric(day), y = summed_sentiment)) + 
+  # add points to our plot, color-coded by airline
+  geom_point(aes(color = airline))+ 
+  # pick a method & fit a model 
+  geom_smooth(method = "auto") + 
+   ggtitle("Daily Sentiments from February 17th till 24th 2015.")
+
+```
+
+
+# Task C: Topic Modelling
+                                                   
+###  creating a Document Term Matrix
+<br/>
+To commence the topic modeling we need to create a document term matrix. This will hold the unique word counts in our corpus. The output below shows we have DocumentTermMatrix object with 3260 documents(rows in the dtm) and 5861 unique terms(columns in the dtm), we have a Non-sparse to sparse ratio of approximately 0.11% which is negligible and a sparsity of 100%.
+
+```{r}
+tidy_airline_stop_words %>%
+  count(word,id) %>%
+  arrange(desc(n))%>%
+  cast_dtm(id,word,n)
+```
+
+###  converting the document term matrix to a readable matrix
+<br/>
+From the output above we can see that we do not have a readable format of our dataset, the code only return the metadata of our DocumentTermMatrix. We will be using the function cast_dtm to convert the DTM to a matrix or dataframe like object where every column is of the same type. The matrix can be indexed using the [row,column] format. A single row in a document term matrix represents a document which in our case is a tweet and the column is the unique word or term used across all documents in the corpus. The values in the DTM are the count of tokens or word use in each document. The output below shows that we have mostly zero which is what we refer to as a sparse dtm. The output below shows that for our tweet with id 1105 worst was used 6 times, which means this user was quite angry with the services provided. 
+```{r}
+tidy_airline_stop_words %>%
+  count(word,id) %>%
+  arrange(desc(n))%>%
+  cast_dtm(id,word,n)%>%
+  as.matrix()-> airline_dtm
+airline_dtm[1:4, 1:10]
+```
+      
+                                    
+###  running topic model
+<br/>
+The reason for converting our data into a dtm is because Topic modeling algorithms such as Latent Dirichlet Allocation takes data in with the DTM format. We will be using the function LDA() from the package topicmodels() to perform this modeling. The function takes 4 inputs as seen below, the dtm, the number of topics to model k, the method for modeling which we used the Gibbs sampler method in this case and setting our simulation seed which makes our results repeatable. The function glimpse() was used to see what is encoded within the output of the LDA run. The output shows us information such as the k used for the modeling, the number of terms, documents and also the range of the beta output.
+```{r}
+# Run an LDA with 2 topics and a Gibbs sampler
+lda_out2 <- LDA(
+  airline_dtm,
+  k = 2,
+  method = "Gibbs",
+  control = list(seed = 42)
+)
+
+#Using glimpse to view content of the lda_out
+glimpse(lda_out2)
+```
+
+###  creating a dataframe from the LDA output
+<br/>
+We will evaluate the model output by using the tidy() function, we specify the required arguments. The output shows us a dictionary of all the words in our corpus sorted according to the probability of them occurring in a particular topic.
+```{r}
+# Tidy the matrix of word probabilities
+lda_topics2 <- lda_out2 %>% 
+  tidy(matrix= "beta")
+# Arrange the topics by word probabilities in descending order
+lda_topics2 %>% 
+  arrange(desc(beta))
+```
+
+
+###  plotting and interpreting the output of the modelling
+<br/>
+The output below shows the first topic connected to words related to User Service Experience like service, customer, bag, wait and baggage occurring together with a high probability. The second topic shows words related to issues with the flight itself with words like flight, cancelled, delayed and waiting occurring together. Based on the output we will be renaming the topics as follows;<br/>
+Topic 1 - Service Experience<br/>
+Topic 2 - Flight  Experience<br/>
+```{r}
+# Select the top 15 terms by topic and reorder term
+word_probability <- lda_topics2 %>% 
+  group_by(topic) %>% 
+  top_n(15,beta) %>% 
+  ungroup() %>%
+  mutate(term2 = fct_reorder(term, beta))
+
+# Plot word_probability, color and facet based on topic
+ggplot(
+  word_probability, 
+  aes(x = term2, y=beta, fill = as.factor(topic))
+) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~topic, scales = "free") +
+  coord_flip()
+```
+
+
+
+###  Modelling for 3 topics(k=3)
+<br/>
+Topic modeling like other unsupervised algorithm is subjective and we would like to find a way to validate if we have selected the right amount of topics for our corpus. This would be done by performing another topic modeling using the Gibbs sampler and 3 topics. We  compare  the  output from the two models. The output shows we still have similar words topping the probability a ggplot would help visualize this better.
+```{r}
+# Run an LDA with 3 topics and a Gibbs sampler
+lda_out3 <- LDA(
+  airline_dtm,
+  k = 3,
+  method = "Gibbs",
+  control = list(seed = 42)
+)
+
+#Using glimpse to view content of the lda_out
+glimpse(lda_out3)
+# Tidy the matrix of word probabilities
+lda_topics3 <- lda_out3 %>% 
+  tidy(matrix= "beta")
+# Arrange the topics by word probabilities in descending order
+lda_topics3 %>% 
+  arrange(desc(beta))
+```
+
+
+###  Interpreting the Topic Models using 3 topics
+<br/>
+The output below shows the first topic connected to words related to User Service Experience like service, customer, bag, wait and baggage occurring together with a high probability. The second topic shows words related to issues with the flight itself with words like flight, canceled, delayed and waiting occurring together. The third topic has words like dm, email, website, luggage,lost occurring together which are words related to the digital aspect of the airline. Based on the output we will be renaming the topics as follows;<br/>
+Topic 1 - Service Experience<br/>
+Topic 2 - Flight  Experience<br/>
+Topic 3 - Digital Experience<br/>
+
+```{r}
+# Select the top 15 terms by topic and reorder term
+word_probability <- lda_topics3 %>% 
+  group_by(topic) %>% 
+  top_n(15,beta) %>% 
+  ungroup() %>%
+  mutate(term2 = fct_reorder(term, beta))
+
+# Plot word_probs2, color and facet based on topic
+ggplot(
+  word_probability, 
+  aes(x = term2, y=beta, fill = as.factor(topic))
+) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~topic, scales = "free") +
+  coord_flip()
+
+```
+
+###  Comparing differences in beta(word probability) between Topic 
+<br/>
+ We want to explore the terms that have the greatest differences in their word probability between topic 1 and topic 2. We will be using the log ratio of the two to perform this task using the formular: log(beta1/beta2). When we look at the odds of an event, we can see that we have two ratios one of them is usually from 0-1 and the other 1- infinity. This asymmetry makes it difficult to compare one odd against another directly. This can be solved by taking the logs of both odds which makes the outcome symmetrical which we did below.  
+ 
+```{r}
+beta_spread <- lda_topics2 %>%
+  #using the paste0 and mutate function to manipulate the values in the topic columns by adding extra strings
+  mutate(topic = paste0("topic", topic)) %>%
+  #Using the spread function to change the shape of our data based on the contents of the topic column
+  spread(topic, beta) %>%
+  #filtering for values having a beta value of greater than 0.001 for either topic 1 or topic 2
+  filter(topic1 > 0.001 | topic2 > 0.001) %>%
+  #using the mutate function to perform the numerical operation
+  mutate(logratio = log2(topic2 / topic1))
+beta_spread
+```
+
+###  plot of differences in beta between Topic 
+<br/>
+The output below shows that more common in topic 2 are flight,cancelled,flights,hours,waiting. Topic 1 is defined by words like customer, service, agent,flying. This validates the results of our topic modeling using 2 topics performed above and the naming convention we used to encode the topics.
+
+```{r}
+#load the variable beta_spread group by its logratio greater than zero or not
+beta_spread %>%
+  group_by(logratio < 0) %>%
+  #pick the top 15 values using the absolute values of the logratio
+  top_n(15, abs(logratio)) %>% 
+  ungroup() %>% 
+  #order by the terms logratio
+  mutate(term = reorder(term, logratio)) %>% 
+  ggplot(aes(term,logratio, fill = logratio < 0)) + 
+  geom_col(show.legend = FALSE) +
+  coord_flip() +
+  ylab("log odds ratio for topic1 vs topic 2") +
+  scale_fill_discrete(name="", labels=c("Topic 1","Topic 2"))
+```
+
+# Task D: Further exploration 
+                                                      
+###  word network
+<br/>
+We used the unnest function to break our text into component words and used the argument (token =ngrams) which specifies pairs of words used together and we set this as n=2. We see words like cancelled flights occuring together. The words customer service also occurs together meaning most of the tweets are about customer issues. We also see gate, airport and airplane occuring together.
+```{r}
+#unnest the airline data using the argument token ngrams
+word_connect <- airline_data %>% 
+  unnest_tokens(word,text,token="ngrams", n = 2) %>% 
+    anti_join(stop_words)
+#format the string and use space as the separator
+word_connect_separated <- word_connect %>% 
+  separate(word,c("word1","word2"), sep = " ")
+
+#get a count for word1 and word2
+word_connect_filtered <- word_connect_separated %>% 
+  count(word1,word2,sort = TRUE)
+word_connect_count <- word_connect_filtered %>%
+  count(word1,word2,sort = TRUE)
+
+#plotting the data
+word_connect_filtered %>% 
+  filter(n >= 24) %>%
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  #remove the comment in the geom_edge_link to see connections between words
+ #geom_edge_link(aes(edge_alpha = n, edge_width = n)) +
+  geom_node_point(color = "darkslategray4", size = 3) +
+  geom_node_text(aes(label=name), vjust = 1.8, size =3) +
+  labs(title = "Word Network: Airline Tweets", subtitle = "Text mining twitter data ",
+       x ="", y="")
+
+```
+
+
+
+
+###  Comparing frequency of words for united vs virgin
+<br/>
+We started by calculating the word frequencies for the individual airlines. We grouped by airline and count how many times a word was used by the users of each airlines. We used a left join to add a column of the total number of words used by users of the two airlines. This was then used to calculate the frequency for each airline.  We used spread to to change the shape of the dataset using the groups in the airline column, null values were omitted and we renamed the columns. We plotted the frequency using ggplot and used the geom_jitter() function to avoid overplotting of the dataset. The check_overlap argument was set as TRUE to avoid text labels printing out on top of one another.
+
+Words near the line in our plot were the words that were used with approximately equal frequencies by the users of both airlines. The words far away from the line are used much more by users on either groups depending on their location relative to the line. The Words, hashtags, and usernames that appear in this plot are ones that we have both used at least once in tweets.
+
+Finally, the plot shows us that United Airline users were more likely to miss their flights and have a bad experience while the users of Virgin America were likely to have a good experience.
+
+```{r}
+#create variable frequency
+frequency <- tidy_airline_stop_words %>% 
+  group_by(airline) %>% 
+  count(word, sort = TRUE) %>% 
+  left_join(tidy_airline_stop_words %>%
+              group_by(airline) %>% 
+              summarise(total=n())) %>% 
+  mutate(freq = n/total) %>% 
+  select(airline, word, freq) %>% 
+  spread(airline,freq) %>% 
+  arrange(United,"Virgin America") %>%  na.omit() 
+colnames(frequency)[3] <- "VirginAmerica" 
+
+#plot word frequency
+ggplot(frequency, aes(United,VirginAmerica)) +
+  geom_jitter(alpha = 0.1, size = 2.5, width = 0.25, height = 0.25) +
+  geom_text(aes(label = word), check_overlap = TRUE, vjust = 1.5) +
+  scale_x_log10(labels = percent_format()) +
+  scale_y_log10(labels = percent_format()) +
+  geom_abline(color = "red") + 
+  ggtitle("Frequency of words used by United Airlines Users and Virgin America Users")
+```
+
+
