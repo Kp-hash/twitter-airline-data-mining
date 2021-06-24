@@ -1,0 +1,1964 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Tweet Mining},
+  pdfauthor={LATEEF MUIZZ KOLAPO},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{Tweet Mining}
+\author{LATEEF MUIZZ KOLAPO}
+\date{1/21/2021}
+
+\begin{document}
+\maketitle
+
+ReadMe (1) For optimum performance of the code below ensure the
+following packages and libraries are installed and loaded to your
+Workspace.
+
+\begin{itemize}
+\tightlist
+\item
+  tidytext
+\item
+  stringr
+\item
+  tidytext
+\item
+  textdata
+\item
+  stats
+\item
+  reshape2
+\item
+  modeltools
+\item
+  topicmodels
+\item
+  tm
+\item
+  widyr
+\item
+  anytime
+\item
+  rtweet
+\item
+  leaflet
+\item
+  lubridate
+\item
+  lutz
+\item
+  glue
+\item
+  scales
+\item
+  twitteR
+\item
+  wordcloud
+\item
+  igraph
+\item
+  ggraph
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Ensure you run the code from Top to bottom as the content of the
+  variable might change depending on the line of code been worked on.
+\end{enumerate}
+
+\hypertarget{loading-all-packages-needed-using-the-package-manager}{%
+\section{Loading all packages needed using the package
+manager}\label{loading-all-packages-needed-using-the-package-manager}}
+
+Package manager is a package that helps installs and load r packages
+when needed without having to call each package individually using the
+library function.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#loading package manager}
+\KeywordTok{require}\NormalTok{(pacman)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: pacman
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#using p_load function to load all packages used}
+\NormalTok{pacman}\OperatorTok{::}\KeywordTok{p_load}\NormalTok{(tidyverse,tidytext,stringr,tidytext,textdata,stats,}
+\NormalTok{               reshape2,modeltools,topicmodels,tm,widyr,anytime,rtweet,}
+\NormalTok{               leaflet,lubridate,lutz,glue,scales,twitteR,wordcloud,igraph,ggraph)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{problem-statement}{%
+\section{Problem statement}\label{problem-statement}}
+
+Four tasks were performed on the airline tweet dataset provided
+including Text mining, Sentiment Analysis, Topic Model and Additional
+Exploratory Analysis. The R software environment was used to perform the
+four tasks.
+
+\hypertarget{task-a-text-mining}{%
+\section{Task A: Text Mining}\label{task-a-text-mining}}
+
+\hypertarget{loading-the-dataset}{%
+\subsubsection{loading the dataset}\label{loading-the-dataset}}
+
+The output shows we have 9 columns and 3,339 rows in the dataset, this
+means we have 3,339 tweets about United and Virgin America arline. Each
+row in the dataset represents a tweet and the primary key or identifier
+for the dataset is the Tweet\_id column.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Loading the data into variable airline_data}
+\NormalTok{airline_data <-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\StringTok{"airline.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Missing column names filled in: 'X1' [1]
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## -- Column specification --------------------------------------------------------
+## cols(
+##   X1 = col_double(),
+##   tweet_id = col_character(),
+##   sentiment = col_character(),
+##   airline = col_character(),
+##   retweet_count = col_double(),
+##   text = col_character(),
+##   tweet_created = col_character(),
+##   tweet_location = col_character(),
+##   user_timezone = col_character()
+## )
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#previewing the dataset}
+\NormalTok{airline_data }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3,339 x 9
+##       X1 tweet_id sentiment airline retweet_count text  tweet_created
+##    <dbl> <chr>    <chr>     <chr>           <dbl> <chr> <chr>        
+##  1     0 Tr_twee~ neutral   Virgin~             0 "@Vi~ 2015-02-24 1~
+##  2     1 Tr_twee~ positive  Virgin~             0 "@Vi~ 2015-02-24 1~
+##  3     2 Tr_twee~ neutral   Virgin~             0 "@Vi~ 2015-02-24 1~
+##  4     3 Tr_twee~ negative  Virgin~             0 "@Vi~ 2015-02-24 1~
+##  5     4 Tr_twee~ negative  Virgin~             0 "@Vi~ 2015-02-24 1~
+##  6     5 Tr_twee~ negative  Virgin~             0 "@Vi~ 2015-02-24 1~
+##  7     6 Tr_twee~ positive  Virgin~             0 "@Vi~ 2015-02-24 1~
+##  8     7 Tr_twee~ positive  Virgin~             0 "@vi~ 2015-02-24 1~
+##  9     8 Tr_twee~ positive  Virgin~             0 "@Vi~ 2015-02-24 1~
+## 10     9 Tr_twee~ positive  Virgin~             0 "@Vi~ <NA>         
+## # ... with 3,329 more rows, and 2 more variables: tweet_location <chr>,
+## #   user_timezone <chr>
+\end{verbatim}
+
+\hypertarget{plotting-the-tweets-per-hour}{%
+\subsubsection{Plotting the tweets per
+hour}\label{plotting-the-tweets-per-hour}}
+
+The ts\_plot() function from the rtweet package enables us to plot the
+frequency of tweets over a variety of time intervals (e.g.~``secs'',
+``mins'', ``hours'', ``days'', ``weeks'', ``months'', ``years'') in a
+ggplot2 plot. The output shows that we have the highest number of tweets
+coming in on February 20 and 23.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Converting the tweet_created variable to a time object using anytime() function}
+\NormalTok{airline_time <-}\StringTok{ }\NormalTok{airline_data }\OperatorTok{%>%}\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{time_conv =} \KeywordTok{anytime}\NormalTok{(airline_data}\OperatorTok{$}\NormalTok{tweet_created)) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{na.omit}\NormalTok{()}
+\NormalTok{airline_time}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1,698 x 10
+##       X1 tweet_id sentiment airline retweet_count text  tweet_created
+##    <dbl> <chr>    <chr>     <chr>           <dbl> <chr> <chr>        
+##  1     2 Tr_twee~ neutral   Virgin~             0 @Vir~ 2015-02-24 1~
+##  2     6 Tr_twee~ positive  Virgin~             0 @Vir~ 2015-02-24 1~
+##  3     7 Tr_twee~ positive  Virgin~             0 @vir~ 2015-02-24 1~
+##  4     8 Tr_twee~ positive  Virgin~             0 @Vir~ 2015-02-24 1~
+##  5    11 Tr_twee~ positive  Virgin~             0 @Vir~ 2015-02-24 1~
+##  6    12 Tr_twee~ negative  Virgin~             0 @Vir~ 2015-02-24 1~
+##  7    13 Tr_twee~ positive  Virgin~             0 @Vir~ 2015-02-24 0~
+##  8    14 Tr_twee~ positive  Virgin~             0 I ❤️~ 2015-02-24 0~
+##  9    15 Tr_twee~ positive  Virgin~             0 @Vir~ 2015-02-24 0~
+## 10    18 Tr_twee~ positive  Virgin~             0 @Vir~ 2015-02-24 0~
+## # ... with 1,688 more rows, and 3 more variables: tweet_location <chr>,
+## #   user_timezone <chr>, time_conv <dttm>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#using the timeseries plot object to plot the dataset}
+\KeywordTok{ts_plot}\NormalTok{(airline_time, }\StringTok{"hours"}\NormalTok{,}\DataTypeTok{col=}\StringTok{"#5cc2f2"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{x =} \OtherTok{NULL}\NormalTok{, }\DataTypeTok{y =} \OtherTok{NULL}\NormalTok{,}
+       \DataTypeTok{title =} \StringTok{"Frequency of the airline tweets - Daily interval"}\NormalTok{,}
+       \DataTypeTok{subtitle =} \KeywordTok{paste0}\NormalTok{(}\KeywordTok{format}\NormalTok{(}\KeywordTok{min}\NormalTok{(airline_time}\OperatorTok{$}\NormalTok{time_conv), }\StringTok{"%d %B %Y"}\NormalTok{), }\StringTok{" to "}\NormalTok{, }\KeywordTok{format}\NormalTok{(}\KeywordTok{max}\NormalTok{(airline_time}\OperatorTok{$}\NormalTok{time_conv),}\StringTok{"%d %B %Y"}\NormalTok{)),}
+       \DataTypeTok{caption =} \StringTok{"source: Tweets about Virgin America and United Airline"}\NormalTok{) }
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-3-1.pdf}
+
+\hypertarget{plotting-the-tweets-by-location}{%
+\subsubsection{Plotting the tweets by
+location}\label{plotting-the-tweets-by-location}}
+
+ggplot was used to plot the total count of tweets based on the user
+locations, from the output we can see we have the highest amount of
+tweets from San Francisco, CA and the least amount of tweet from other
+users tagged as Global. We removed the null values from the dataset
+using the is.na() function.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#create variable airline_top_loc for top ten tweeting locations}
+\NormalTok{airline_top_loc <-}\StringTok{ }\NormalTok{airline_data }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(}\OperatorTok{!}\KeywordTok{is.na}\NormalTok{(tweet_location)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{count}\NormalTok{(tweet_location, }\DataTypeTok{sort =} \OtherTok{TRUE}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{top_n}\NormalTok{(}\DecValTok{10}\NormalTok{) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Selecting by n
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(airline_top_loc,}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ tweet_location, }\DataTypeTok{y =}\NormalTok{ n, }\DataTypeTok{fill=}\NormalTok{tweet_location)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_col}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{coord_flip}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Tweet count based on user locations"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-4-1.pdf}
+
+\hypertarget{getting-the-most-retweeted-tweet-in-the-entire-dataset}{%
+\subsubsection{Getting the most retweeted tweet in the entire
+dataset}\label{getting-the-most-retweeted-tweet-in-the-entire-dataset}}
+
+Twitter dataset contains the column ``retweet\_count'' whose values
+shows us the retweet count of a particular tweet in our dataset. Retweet
+count is the number of times a particular tweet was reshared by other
+users. Here we sort all the tweets in descending order by the size of
+the ``retweet\_count'', slice off the top row and print the details. We
+can see the user @FreyaBevan\_Fund seems to be our most influential user
+in the entire dataset.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#create a variabe airline_rt to hold the tweet with the highest retweet}
+\NormalTok{airline_rt <-}\StringTok{ }\NormalTok{airline_data }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(}\OperatorTok{-}\NormalTok{retweet_count) }\OperatorTok{%>%}
+\StringTok{ }\KeywordTok{slice}\NormalTok{(}\DecValTok{1}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(tweet_created, text, retweet_count,airline,tweet_id)}
+
+\NormalTok{airline_rt}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 5
+##   tweet_created     text                       retweet_count airline   tweet_id 
+##   <chr>             <chr>                              <dbl> <chr>     <chr>    
+## 1 2015-02-18 03:39~ @VirginAmerica @AmericanA~             4 Virgin A~ Tr_tweet~
+\end{verbatim}
+
+\hypertarget{getting-the-most-used-hashtags-in-the-entire-dataset}{%
+\subsubsection{Getting the most used hashtags in the entire
+dataset}\label{getting-the-most-used-hashtags-in-the-entire-dataset}}
+
+We pull the most used hashtags in our dataset the text was converted
+into a one word per row format using the unnest\_tokens() function from
+the tidytext package. We added the parameters hashtag to specify our
+search for hashtags within the tweets. The hashtags were selected,
+counted and sorted in a descending order and we picked the top 10
+hashtags used. The output shows us that hashtags with united at the
+forefront were the most used which is expected, we can see that customer
+service is the other top hashtags used which is also not surprising
+since people mostly tweet at service providers to make complaint.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#extract most used airline hashtags and remove null values}
+\NormalTok{airline_hash<-}\StringTok{ }\NormalTok{airline_data }\OperatorTok{%>%}\StringTok{ }\KeywordTok{na.omit}\NormalTok{() }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{unnest_tokens}\NormalTok{(hashtag, text, }\StringTok{"tweets"}\NormalTok{, }\DataTypeTok{to_lower =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\CommentTok{#filter for hashtags only in the text}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(}\KeywordTok{str_detect}\NormalTok{(hashtag, }\StringTok{"^#"}\NormalTok{)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(hashtag, }\DataTypeTok{sort =} \OtherTok{TRUE}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{top_n}\NormalTok{(}\DecValTok{10}\NormalTok{) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Selecting by n
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#plot the top ten hashtags used}
+  \KeywordTok{ggplot}\NormalTok{(airline_hash,}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ hashtag, }\DataTypeTok{y =}\NormalTok{ n, }\DataTypeTok{fill=}\NormalTok{hashtag)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_col}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{coord_flip}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Tweet Word count for all airline"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+\hypertarget{summarizing-the-dataset}{%
+\subsubsection{summarizing the dataset}\label{summarizing-the-dataset}}
+
+The data was grouped into the two different airlines and we can see that
+United airline has 2884 rows of data, Virgin America has 454 and we have
+a missing group NA, this would be removed. This means in our dataset
+United has around 70\% of the entire dataset.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#count by airline type}
+\NormalTok{airline_data }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(airline) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{number_t =} \KeywordTok{n}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `summarise()` ungrouping output (override with `.groups` argument)
+\end{verbatim}
+
+\begin{verbatim}
+## # A tibble: 3 x 2
+##   airline        number_t
+##   <chr>             <int>
+## 1 United             2884
+## 2 Virgin America      454
+## 3 <NA>                  1
+\end{verbatim}
+
+\hypertarget{removing-null-category-from-the-dataset}{%
+\subsubsection{removing null category from the
+dataset}\label{removing-null-category-from-the-dataset}}
+
+Removing the null value from the variable by filtering for just united
+and virgin America because using na.omit(). This would remove all rows
+with occurrence of any null value and we do not want this, we only want
+to remove the row where the airline is unavailable.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#filter for tweets about just United and Virgin America this remove other groups}
+\NormalTok{airline_data <-}\StringTok{ }\NormalTok{airline_data }\OperatorTok{%>%}\StringTok{ }\KeywordTok{filter}\NormalTok{(airline }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"United"}\NormalTok{,}\StringTok{"Virgin America"}\NormalTok{))}
+\CommentTok{#create variable air_count for airline count}
+\NormalTok{air_count <-}\StringTok{ }\NormalTok{airline_data }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(airline) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{number_t =} \KeywordTok{n}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `summarise()` ungrouping output (override with `.groups` argument)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#plot tweet count by airline}
+\KeywordTok{ggplot}\NormalTok{(air_count, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ airline, }\DataTypeTok{y =}\NormalTok{ number_t, }\DataTypeTok{fill=}\NormalTok{airline)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_col}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{coord_flip}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Tweet Word count for all airline"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+\hypertarget{tokenizing-the-data-breaking-the-tweet-into-bag-of-words}{%
+\subsubsection{Tokenizing the data: Breaking the tweet into bag of
+words}\label{tokenizing-the-data-breaking-the-tweet-into-bag-of-words}}
+
+We tokenized the data by breaking each tweet or row into its own
+individual bag of words and each word in the tweet would be tokenized.
+This process helps make our dataset easier to analyze and helps convert
+the text into categorical datasets. As seen in the word column of the
+tidy\_airline\_unnested dataframe, each row now belongs to a tokenized
+term. We added a custom column ``id'' to the dataset so we can track the
+words that belongs to each tweet. The number of rows in the dataset has
+exploded from 3,339 rows to 58,563 rows. We would need to remove the
+stop words in this data to proceed with our analysis. We can see United
+is the most used term in the entire dataset which is expected and as
+such we would call this and terms such as virgin america stop words
+which will be removed.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#------------------------------------------------------}
+\NormalTok{tidy_airline_unnested <-}\StringTok{ }\NormalTok{airline_data }\OperatorTok{%>%}
+\StringTok{  }\CommentTok{#break text into component terms}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{id =} \KeywordTok{row_number}\NormalTok{()) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{unnest_tokens}\NormalTok{(word,text)}
+
+\CommentTok{#we will now do a count of words in the entire corpus(collection of documents)}
+\NormalTok{tidy_airline_unnested }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(word) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(n))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6,424 x 2
+##    word       n
+##    <chr>  <int>
+##  1 united  3075
+##  2 to      1910
+##  3 the     1360
+##  4 i       1134
+##  5 a       1076
+##  6 you      974
+##  7 for      859
+##  8 flight   846
+##  9 and      796
+## 10 on       784
+## # ... with 6,414 more rows
+\end{verbatim}
+
+\hypertarget{removing-stop-words-from-the-document}{%
+\subsubsection{Removing stop words from the
+document}\label{removing-stop-words-from-the-document}}
+
+We would be removing stop words from the dataset, these are words which
+are commonly used and would not add much to the emotional valence of our
+analysis. After using the anti-join to remove the stop words by
+returning words in our document not in the stop words, we notice the
+total number of rows reduced from 58,563 to 27,151 rows. The output
+still shows we have terms like united,virginamerica, t.co and http
+present which based on our rule of thumb for removing words (i.e if a
+word adds value to the emotional valence of the analysis) we will be
+removing them using a custom stop words we create using the tribble()
+function.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#create a new data that we have removed all stop words, we use the anti join method to sieve out the stop words in the data}
+\NormalTok{tidy_airline_stop_words <-}\StringTok{ }\NormalTok{tidy_airline_unnested }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{anti_join}\NormalTok{(stop_words)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Joining, by = "word"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#perform a count on the new data in descending order}
+\NormalTok{tidy_airline_stop_words }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(word) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(n))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 5,867 x 2
+##    word              n
+##    <chr>         <int>
+##  1 united         3075
+##  2 flight          846
+##  3 virginamerica   463
+##  4 t.co            263
+##  5 http            251
+##  6 service         218
+##  7 time            187
+##  8 customer        175
+##  9 cancelled       169
+## 10 bag             153
+## # ... with 5,857 more rows
+\end{verbatim}
+
+\hypertarget{plotting-the-top-word-counts.}{%
+\subsubsection{Plotting the top word
+counts.}\label{plotting-the-top-word-counts.}}
+
+We plotted the top word counts in the dataset with counts greater than
+80. This gives us an idea of what we have present in the dataset. From
+the plot we can see that United has the most occurrence among all the
+terms in the dataset and also virginamerica has a very high occurrence
+too. These two words should be considered as part of the stop words in
+this data as explained above.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#get word count}
+\NormalTok{word_counts <-}\StringTok{ }\NormalTok{tidy_airline_stop_words }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(word) }\OperatorTok{%>%}
+\StringTok{  }\CommentTok{#sort in descending order}
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(n))}
+
+\CommentTok{#plot the word count}
+\NormalTok{word_counts }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(n}\OperatorTok{>}\StringTok{ }\DecValTok{80}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(n))}\OperatorTok{%>%}
+\KeywordTok{ggplot}\NormalTok{( }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ word, }\DataTypeTok{y =}\NormalTok{ n)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_col}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{coord_flip}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Tweet Word count"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-11-1.pdf}
+
+\hypertarget{creating-custom-stop-words}{%
+\subsubsection{Creating custom stop
+words}\label{creating-custom-stop-words}}
+
+The output above show we have some words that are not important to us
+having a high frequency. Terms like united,virginaamerica and t.co. We
+will be creating a custom stop word dataframe to remove this. Using
+tribble() function which is customized for data entry in code we create
+a list object containing our custom stop. The outcome below shows that
+the original list of stop words now includes our custom stop words, and
+we can now proceed with rerunning the anti-join process. In this task we
+used the bind\_rows instead of rbind because in cases where there are NA
+values in the dataset rbind might return errors. Steps: - Create a list
+of custom words using the tribble function - Perform a row-wise join
+between the custom stop words and the original stop words - Run the
+anti-join process between the new stop words and the terms in the
+dataset.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#create the custom stop words using tribble()}
+\NormalTok{custom_stop_words <-}\StringTok{ }\KeywordTok{tribble}\NormalTok{(}
+  \OperatorTok{~}\NormalTok{word, }\OperatorTok{~}\NormalTok{lexicon,}
+  \StringTok{"virginamerica"}\NormalTok{, }\StringTok{"CUSTOM"}\NormalTok{,}
+  \StringTok{"united"}\NormalTok{, }\StringTok{"CUSTOM"}\NormalTok{,}
+  \StringTok{"t.co"}\NormalTok{, }\StringTok{"CUSTOM"}\NormalTok{,}
+  \StringTok{"http"}\NormalTok{, }\StringTok{"CUSTOM"}\NormalTok{,}
+  \StringTok{"2"}\NormalTok{, }\StringTok{"CUSTOM"}\NormalTok{,}
+  \StringTok{"3"}\NormalTok{, }\StringTok{"CUSTOM"}
+\NormalTok{)}
+\CommentTok{#row-wisw join of custom stop words and original stop words}
+\NormalTok{stop_words2 <-}\StringTok{ }\NormalTok{stop_words }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{bind_rows}\NormalTok{(custom_stop_words)}
+\CommentTok{#confirm our bind was successful}
+\NormalTok{stop_words2 }\OperatorTok{%>%}\StringTok{ }\KeywordTok{filter}\NormalTok{(word }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"t.co"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 2
+##   word  lexicon
+##   <chr> <chr>  
+## 1 t.co  CUSTOM
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{stop_words2 }\OperatorTok{%>%}\StringTok{ }\KeywordTok{filter}\NormalTok{(word }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"virginamerica"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 2
+##   word          lexicon
+##   <chr>         <chr>  
+## 1 virginamerica CUSTOM
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{stop_words2 }\OperatorTok{%>%}\StringTok{ }\KeywordTok{filter}\NormalTok{(word }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"united"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 2
+##   word   lexicon
+##   <chr>  <chr>  
+## 1 united CUSTOM
+\end{verbatim}
+
+\hypertarget{removing-stop-words-using-custom-stop-words}{%
+\subsubsection{Removing stop words using custom stop
+words}\label{removing-stop-words-using-custom-stop-words}}
+
+We will be using the new stop words to remove the custom stop words in
+the dataset. The outcome below shows that the number of rows as reduced
+to around 20,000 which is as a result of our Anti-join process.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#using mutate to create a custom id for each row in the data, unnest to break the text column into the component words and put into new column word.}
+\NormalTok{tidy_airline_stop_words <-}\StringTok{ }\NormalTok{airline_data }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{id =} \KeywordTok{row_number}\NormalTok{()) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{unnest_tokens}\NormalTok{(word,text) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{anti_join}\NormalTok{(stop_words2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Joining, by = "word"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tidy_airline_stop_words}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 22,854 x 10
+##       X1 tweet_id sentiment airline retweet_count tweet_created tweet_location
+##    <dbl> <chr>    <chr>     <chr>           <dbl> <chr>         <chr>         
+##  1     0 Tr_twee~ neutral   Virgin~             0 2015-02-24 1~ <NA>          
+##  2     1 Tr_twee~ positive  Virgin~             0 2015-02-24 1~ <NA>          
+##  3     1 Tr_twee~ positive  Virgin~             0 2015-02-24 1~ <NA>          
+##  4     1 Tr_twee~ positive  Virgin~             0 2015-02-24 1~ <NA>          
+##  5     1 Tr_twee~ positive  Virgin~             0 2015-02-24 1~ <NA>          
+##  6     2 Tr_twee~ neutral   Virgin~             0 2015-02-24 1~ Lets Play     
+##  7     3 Tr_twee~ negative  Virgin~             0 2015-02-24 1~ <NA>          
+##  8     3 Tr_twee~ negative  Virgin~             0 2015-02-24 1~ <NA>          
+##  9     3 Tr_twee~ negative  Virgin~             0 2015-02-24 1~ <NA>          
+## 10     3 Tr_twee~ negative  Virgin~             0 2015-02-24 1~ <NA>          
+## # ... with 22,844 more rows, and 3 more variables: user_timezone <chr>,
+## #   id <int>, word <chr>
+\end{verbatim}
+
+\hypertarget{replotting-the-word-counts}{%
+\subsubsection{Replotting the word
+counts}\label{replotting-the-word-counts}}
+
+After removing the stop words and custom stop words from the dataset we
+plotted the data as seen below. The outcome below shows the plot in an
+orderly manner and we can see that flight is the most used term.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#creating an ordered plot we will use factor ordering and mutate to order our data by the count of words}
+\NormalTok{word_counts2 <-}\StringTok{ }\NormalTok{tidy_airline_stop_words }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(word) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{word2 =} \KeywordTok{fct_reorder}\NormalTok{(word,n))}
+\NormalTok{word_counts2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 5,861 x 3
+##    word              n word2        
+##    <chr>         <int> <fct>        
+##  1 _austrian         1 _austrian    
+##  2 0                 6 0            
+##  3 0_0               1 0_0          
+##  4 00                1 00           
+##  5 000114            1 000114       
+##  6 000419            1 000419       
+##  7 0011              1 0011         
+##  8 0016              3 0016         
+##  9 00pm              2 00pm         
+## 10 0162389030167     1 0162389030167
+## # ... with 5,851 more rows
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#using word count data to plot the word count seen below and filter for word counts greater than 80 }
+\NormalTok{word_counts2 }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(n}\OperatorTok{>}\StringTok{ }\DecValTok{80}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(n))}\OperatorTok{%>%}
+\KeywordTok{ggplot}\NormalTok{( }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ word2, }\DataTypeTok{y =}\NormalTok{ n)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_col}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{coord_flip}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Tweet Word count for all airline"}\NormalTok{) }
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-14-1.pdf}
+
+\hypertarget{splitting-the-word-usage-by-airline}{%
+\subsubsection{Splitting the word usage by
+airline}\label{splitting-the-word-usage-by-airline}}
+
+We have two groups of users in our dataset, people tweeting about United
+Airlines and those tweeting about Virgin America airlines. We will be
+splitting the word usage into two datasets, United airline and Virgin
+America airline. We successfully split our tidy data into the two groups
+of airline in the data by using the filter function. we now have 3
+dataset, united\_tidy, virgin\_tidy and tidy\_airline\_stop\_words.
+united\_tidy - holds the tweet data of users tweeting about United
+Airlines virgin\_tidy - holds the tweet data of users tweeting about
+Virgin America Airlines tidy\_airline\_stop\_words - holds the cleaned
+dataset for the two groups joined together.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{united_tidy <-}\StringTok{ }\NormalTok{tidy_airline_stop_words }\OperatorTok{%>%}\StringTok{ }\KeywordTok{filter}\NormalTok{(airline}\OperatorTok{==}\StringTok{'United'}\NormalTok{) }
+\NormalTok{virgin_tidy <-}\StringTok{ }\NormalTok{tidy_airline_stop_words }\OperatorTok{%>%}\StringTok{ }\KeywordTok{filter}\NormalTok{(airline}\OperatorTok{==}\StringTok{'Virgin America'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{plotting-word-count-by-airline}{%
+\subsubsection{Plotting Word count by
+airline}\label{plotting-word-count-by-airline}}
+
+We will be exploring the two groups in our dataset with a word count
+plot of the individual groups. We notice that for both group the term
+``flight'' has the highest occurrence which is expected since the
+dataset is about airlines. We might be tempted to remove this word from
+our data and categorize it as a stop word but based on our rule of thumb
+we stated earlier(removing only words that adds no emotional valence) we
+would keep the term in our data since it helps in knitting together the
+story about our dataset.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#plotting the terms with a word count greater than 60 for united airlines}
+\NormalTok{united_tidy }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(word) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{word2 =} \KeywordTok{fct_reorder}\NormalTok{(word,n)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(n}\OperatorTok{>}\StringTok{ }\DecValTok{60}\NormalTok{)  }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(n))}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ word2,}\DataTypeTok{y =}\NormalTok{ n)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_col}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_flip}\NormalTok{() }\OperatorTok{+}
+\StringTok{      }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{x =} \StringTok{"Location"}\NormalTok{,}
+      \DataTypeTok{y =} \StringTok{"Count"}\NormalTok{,}
+      \DataTypeTok{title =} \StringTok{"Word count for Virgin America Airlines United Airlines"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-16-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#plotting the terms with a word count greater than 60 for Virgin America airlines}
+\NormalTok{virgin_tidy }\OperatorTok{%>%}
+\StringTok{   }\KeywordTok{count}\NormalTok{(word) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{word2 =} \KeywordTok{fct_reorder}\NormalTok{(word,n)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(n}\OperatorTok{>}\StringTok{ }\DecValTok{10}\NormalTok{)  }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(n))}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ word2,}\DataTypeTok{y =}\NormalTok{ n)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_col}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_flip}\NormalTok{() }\OperatorTok{+}
+\StringTok{      }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{x =} \StringTok{"Location"}\NormalTok{,}
+      \DataTypeTok{y =} \StringTok{"Count"}\NormalTok{,}
+      \DataTypeTok{title =} \StringTok{"Word count for Virgin America Airlines"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-16-2.pdf}
+
+\hypertarget{plotting-twitter-user-locations}{%
+\subsubsection{Plotting twitter user
+locations}\label{plotting-twitter-user-locations}}
+
+We will be exploring our the tweets from the users based on their
+location. From the 3 plots below we can see we can see for the known
+locations of user Eastern Time(US \& Canada), Central Time(US \& Canada)
+and Pacific Time (US \& Canada) are the contributing timezones to the
+dataset.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Plotting user locations for the entire dataset}
+\NormalTok{tidy_airline_stop_words }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(user_timezone) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{user_timezone2 =} \KeywordTok{fct_reorder}\NormalTok{(user_timezone,n)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(n}\OperatorTok{>}\StringTok{ }\DecValTok{50}\NormalTok{)  }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(n))}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ user_timezone2,}\DataTypeTok{y =}\NormalTok{ n)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_col}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_flip}\NormalTok{() }\OperatorTok{+}
+\StringTok{      }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{x =} \StringTok{"Location"}\NormalTok{,}
+      \DataTypeTok{y =} \StringTok{"Count"}\NormalTok{,}
+      \DataTypeTok{title =} \StringTok{"Twitter users - unique locations All airlines "}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-17-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Plotting user locations for tweets about united airlines}
+\NormalTok{united_tidy }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(user_timezone) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{user_timezone2 =} \KeywordTok{fct_reorder}\NormalTok{(user_timezone,n)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(n}\OperatorTok{>}\StringTok{ }\DecValTok{50}\NormalTok{)  }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(n))}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ user_timezone2,}\DataTypeTok{y =}\NormalTok{ n)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_col}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_flip}\NormalTok{() }\OperatorTok{+}
+\StringTok{      }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{x =} \StringTok{"Location"}\NormalTok{,}
+      \DataTypeTok{y =} \StringTok{"Count"}\NormalTok{,}
+      \DataTypeTok{title =} \StringTok{"Twitter users - unique locations United Airlines"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-18-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Plotting user locations for tweets about Virgin america airlines}
+\NormalTok{virgin_tidy }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(user_timezone) }\OperatorTok{%>%}\StringTok{  }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{user_timezone2 =} \KeywordTok{fct_reorder}\NormalTok{(user_timezone,n)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(n}\OperatorTok{>}\StringTok{ }\DecValTok{50}\NormalTok{)  }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(n))}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ user_timezone2,}\DataTypeTok{y =}\NormalTok{ n)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_col}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_flip}\NormalTok{() }\OperatorTok{+}
+\StringTok{      }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{x =} \StringTok{"Location"}\NormalTok{,}
+      \DataTypeTok{y =} \StringTok{"Count"}\NormalTok{,}
+      \DataTypeTok{title =} \StringTok{"Twitter users - unique locations Virgn Airlines"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-19-1.pdf}
+
+\hypertarget{plotting-the-word-cloud-for-the-3-dataset}{%
+\subsubsection{Plotting The word cloud for the 3
+dataset}\label{plotting-the-word-cloud-for-the-3-dataset}}
+
+We will be plotting the word cloud using the wordcloud function. We will
+be plotting the wordcloud for the three dataset,
+tidy\_airline\_stop\_words, united\_wc and virgin\_wc. The 3 wordclouds
+shows us the dominance of the flight term in the dataset.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#World cloud for entire dataset}
+\NormalTok{All_wc <-}\StringTok{ }\NormalTok{tidy_airline_stop_words }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{count}\NormalTok{(word)}
+\CommentTok{#use wordcloud function to plot the wordcloud}
+\KeywordTok{wordcloud}\NormalTok{(}\DataTypeTok{words =}\NormalTok{ All_wc}\OperatorTok{$}\NormalTok{word, }\DataTypeTok{freq =}\NormalTok{ All_wc}\OperatorTok{$}\NormalTok{n, }\DataTypeTok{min.freq =} \DecValTok{1}\NormalTok{,}
+          \DataTypeTok{max.words=}\DecValTok{100}\NormalTok{, }\DataTypeTok{random.order=}\OtherTok{FALSE}\NormalTok{, }\DataTypeTok{rot.per=}\FloatTok{0.35}\NormalTok{, }
+          \DataTypeTok{colors=}\KeywordTok{brewer.pal}\NormalTok{(}\DecValTok{8}\NormalTok{, }\StringTok{"Dark2"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-20-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#plot word cloud for united airlines}
+\NormalTok{united_wc <-}\StringTok{ }\NormalTok{united_tidy }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{count}\NormalTok{(word)}
+
+\KeywordTok{wordcloud}\NormalTok{(}\DataTypeTok{words =}\NormalTok{ united_wc}\OperatorTok{$}\NormalTok{word, }\DataTypeTok{freq =}\NormalTok{ united_wc}\OperatorTok{$}\NormalTok{n, }\DataTypeTok{min.freq =} \DecValTok{1}\NormalTok{,}
+          \DataTypeTok{max.words=}\DecValTok{100}\NormalTok{, }\DataTypeTok{random.order=}\OtherTok{FALSE}\NormalTok{, }\DataTypeTok{rot.per=}\FloatTok{0.35}\NormalTok{, }
+          \DataTypeTok{colors=}\KeywordTok{brewer.pal}\NormalTok{(}\DecValTok{8}\NormalTok{, }\StringTok{"Dark2"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-21-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#plot word count for Virgin America airlines}
+\NormalTok{virgin_wc <-}\StringTok{ }\NormalTok{virgin_tidy }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{count}\NormalTok{(word)}
+
+\KeywordTok{wordcloud}\NormalTok{(}\DataTypeTok{words =}\NormalTok{ virgin_wc}\OperatorTok{$}\NormalTok{word, }\DataTypeTok{freq =}\NormalTok{ virgin_wc}\OperatorTok{$}\NormalTok{n, }\DataTypeTok{min.freq =} \DecValTok{1}\NormalTok{,}
+          \DataTypeTok{max.words=}\DecValTok{100}\NormalTok{, }\DataTypeTok{random.order=}\OtherTok{FALSE}\NormalTok{, }\DataTypeTok{rot.per=}\FloatTok{0.25}\NormalTok{, }
+          \DataTypeTok{colors=}\KeywordTok{brewer.pal}\NormalTok{(}\DecValTok{8}\NormalTok{, }\StringTok{"Dark2"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-22-1.pdf}
+
+\hypertarget{task-b-sentiment-analysis}{%
+\section{Task B: Sentiment Analysis}\label{task-b-sentiment-analysis}}
+
+In this section we will be exploring the sentiments of the tweets in our
+dataset and try to draw insights from this texts.
+
+\hypertarget{performing-sentiment-analysis-on-the-data}{%
+\subsection{Performing sentiment analysis on the
+data}\label{performing-sentiment-analysis-on-the-data}}
+
+We will be performing sentiment analysis on the entire dataset. This
+would be done by removing the existing sentiment column in the dataset
+and create a new one.
+
+\hypertarget{using-bing-dictionary}{%
+\subsubsection{Using Bing dictionary}\label{using-bing-dictionary}}
+
+We will be performing the sentiment analysis using the Bing to classify
+the words in our dataset into emotions as classified by the
+dictionaries. We see the top contributing words to the positive and
+negative sentiments in the dataset. The highest term used for positive
+sentiments as grouped by the bing library is ``love'', while the top
+word used in negative sentiment was in delayed, lost and miss. This
+tells us that most of the complaint in the dataset was about delayed
+flight, lost luggages and missed flights.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{airline_new_bing <-}\StringTok{ }
+\CommentTok{#removing existing sentiment in data}
+\StringTok{  }\KeywordTok{select}\NormalTok{(tidy_airline_stop_words, }\OperatorTok{-}\NormalTok{sentiment) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{inner_join}\NormalTok{(}\KeywordTok{get_sentiments}\NormalTok{(}\StringTok{"bing"}\NormalTok{)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(word, sentiment,tweet_id,id, }\DataTypeTok{sort=}\OtherTok{TRUE}\NormalTok{)}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ungroup}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Joining, by = "word"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#bing sentiments by sentiment group}
+\NormalTok{ bing_sent <-}\StringTok{ }\NormalTok{airline_new_bing }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{inner_join}\NormalTok{(}\KeywordTok{get_sentiments}\NormalTok{(}\StringTok{"bing"}\NormalTok{)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(word,sentiment, }\DataTypeTok{sort=}\OtherTok{TRUE}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(sentiment) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{top_n}\NormalTok{(}\DecValTok{10}\NormalTok{,n) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ungroup}\NormalTok{() }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{word2 =} \KeywordTok{fct_reorder}\NormalTok{(word, n))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Joining, by = c("word", "sentiment")
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+   \CommentTok{#use ggplot to plot sentiment word count}
+    \KeywordTok{ggplot}\NormalTok{(bing_sent, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{word2,}\DataTypeTok{y=}\NormalTok{n, }\DataTypeTok{fil=}\NormalTok{sentiment)) }\OperatorTok{+}
+\StringTok{    }\KeywordTok{geom_col}\NormalTok{(}\DataTypeTok{show.legend =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{+}
+\StringTok{    }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\NormalTok{sentiment, }\DataTypeTok{scales=}\StringTok{"free"}\NormalTok{) }\OperatorTok{+}
+\StringTok{    }\KeywordTok{coord_flip}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\StringTok{    }\KeywordTok{labs}\NormalTok{(}
+      \DataTypeTok{title =} \StringTok{"Sentiment Word counts"}\NormalTok{,}
+      \DataTypeTok{x =} \StringTok{"Words"}
+\NormalTok{    )}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-23-1.pdf}
+
+\hypertarget{plotting-word-counts-by-overall-sentiment}{%
+\subsubsection{plotting word counts by overall
+sentiment}\label{plotting-word-counts-by-overall-sentiment}}
+
+We used the mutate function to perform some calculations on the dataset,
+we subtracted negative emotions from the positive ones to give the
+overall sentiment for each of the airlines. We discovered that the
+overall sentiments towards united airline in this dataset is negative
+while that of Virgin America is positive, this can give us an idea of
+the difference between the two airlines. Based on this subset of data we
+can assume Virgin America customers enjoy a better service on average
+than those using the united airline, since we have fewer observations
+for the Virgin America to that of United Airlines it would be unfair to
+compare the two based on this dataset.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#-------------------------------------------------}
+\CommentTok{#Bing overall sentiment analysis of document by airline}
+\NormalTok{bing_overall <-}\StringTok{ }\KeywordTok{select}\NormalTok{(tidy_airline_stop_words, }\OperatorTok{-}\NormalTok{sentiment) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{inner_join}\NormalTok{(}\KeywordTok{get_sentiments}\NormalTok{(}\StringTok{"bing"}\NormalTok{)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(airline,sentiment) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{spread}\NormalTok{(sentiment, n) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{summed_sentiment =}\NormalTok{ positive }\OperatorTok{-}\StringTok{ }\NormalTok{negative)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Joining, by = "word"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#visualize sentiment by airli e}
+\KeywordTok{ggplot}\NormalTok{(bing_overall,}
+  \KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ airline, }\DataTypeTok{y=}\NormalTok{ summed_sentiment, }\DataTypeTok{fill =} \KeywordTok{as.factor}\NormalTok{(airline))}
+\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_col}\NormalTok{(}\DataTypeTok{show.legend =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_flip}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}
+    \DataTypeTok{title =} \StringTok{"Overall sentiment by Airline"}\NormalTok{,}
+    \DataTypeTok{x =} \StringTok{"Airline"}\NormalTok{,}
+    \DataTypeTok{y =} \StringTok{"Summed Sentiment"}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-24-1.pdf}
+
+\hypertarget{plotting-overall-sentiment-based-on-user-time-zone.}{%
+\subsubsection{plotting overall sentiment based on user time
+zone.}\label{plotting-overall-sentiment-based-on-user-time-zone.}}
+
+We plotted the overall sentiments based on the user time zones in the
+dataset. The output revealed that the overall experience of users from
+all the user timezone in the dataset is negative apart from users in the
+pacific Time(US \& Canada) and Central Time(Us \&Canada) this is not
+suprising since users in this timezone have a higher amount of tweets in
+the dataset.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#-----------------------------------------------}
+\CommentTok{#sentient by location}
+\NormalTok{bing_loc <-}\StringTok{ }\KeywordTok{select}\NormalTok{(tidy_airline_stop_words, }\OperatorTok{-}\NormalTok{sentiment) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{inner_join}\NormalTok{(}\KeywordTok{get_sentiments}\NormalTok{(}\StringTok{"bing"}\NormalTok{)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(user_timezone,airline,sentiment) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{spread}\NormalTok{(sentiment, n) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{summed_sentiment =}\NormalTok{ positive }\OperatorTok{-}\StringTok{ }\NormalTok{negative) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{na.omit}\NormalTok{() }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Joining, by = "word"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#visualize sentiment by airli e}
+\KeywordTok{ggplot}\NormalTok{(bing_loc,}
+  \KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ user_timezone, }\DataTypeTok{y=}\NormalTok{ summed_sentiment, }\DataTypeTok{fill =} \KeywordTok{as.factor}\NormalTok{(user_timezone))}
+\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_col}\NormalTok{(}\DataTypeTok{show.legend =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_flip}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}
+    \DataTypeTok{title =} \StringTok{"Overall sentiment by Time zone"}\NormalTok{,}
+    \DataTypeTok{x =} \StringTok{"User timezone"}\NormalTok{,}
+    \DataTypeTok{y =} \StringTok{"Summed Sentiment"}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-25-1.pdf}
+
+\hypertarget{plotting-the-top-30-words-contributing-to-the-sentiments-in-the-dataset}{%
+\subsubsection{plotting the top 30 words contributing to the sentiments
+in the
+dataset}\label{plotting-the-top-30-words-contributing-to-the-sentiments-in-the-dataset}}
+
+The output shows that in the entire dataset only two positive words(Love
+and refund) have a count greater than 30 in the dataset. Words like
+delayed, miss, loss are the contributors for the negative expereince.
+This is expected as this terms are only used for bad service experience.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#bing top 30 sentiments}
+\NormalTok{airline_new_bing }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(sentiment, word, }\DataTypeTok{wt =}\NormalTok{ n) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ungroup}\NormalTok{() }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(n }\OperatorTok{>=}\StringTok{ }\DecValTok{30}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{n =} \KeywordTok{ifelse}\NormalTok{(sentiment }\OperatorTok{==}\StringTok{ "negative"}\NormalTok{, }\OperatorTok{-}\NormalTok{n, n)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{word =} \KeywordTok{reorder}\NormalTok{(word, n)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(word, n, }\DataTypeTok{fill =}\NormalTok{ sentiment)) }\OperatorTok{+}
+\StringTok{  }\CommentTok{#we used stat = identity since we are providing y values}
+\StringTok{  }\KeywordTok{geom_bar}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"identity"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{"Contribution to sentiment"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_flip}\NormalTok{()  }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}
+    \DataTypeTok{title =} \StringTok{"Overall word sentiment by contribution"}\NormalTok{,}
+    \DataTypeTok{x =} \StringTok{"Word"}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-26-1.pdf}
+
+\hypertarget{using-nrc-dictionary}{%
+\subsubsection{Using NRC dictionary}\label{using-nrc-dictionary}}
+
+We will be performing the sentiment analysis using the nrc dictionary to
+classify the words in our dataset into emotions as classified by the
+dictionaries. The output shows this dictionary contains more sentiment
+groupings than the Bing dictionary.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{airline_new_nrc <-}\StringTok{ }
+\CommentTok{#removing existing sentiment in data}
+\StringTok{  }\KeywordTok{select}\NormalTok{(tidy_airline_stop_words, }\OperatorTok{-}\NormalTok{sentiment) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{inner_join}\NormalTok{(}\KeywordTok{get_sentiments}\NormalTok{(}\StringTok{"nrc"}\NormalTok{)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(word, sentiment,tweet_id,id, }\DataTypeTok{sort=}\OtherTok{TRUE}\NormalTok{)}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ungroup}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Joining, by = "word"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#NRC sentiments by sentiment group}
+\NormalTok{ nrc_sent <-}\StringTok{ }\NormalTok{airline_new_nrc }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{inner_join}\NormalTok{(}\KeywordTok{get_sentiments}\NormalTok{(}\StringTok{"nrc"}\NormalTok{)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(word,sentiment, }\DataTypeTok{sort=}\OtherTok{TRUE}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(sentiment) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{top_n}\NormalTok{(}\DecValTok{5}\NormalTok{,n) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ungroup}\NormalTok{() }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{word2 =} \KeywordTok{fct_reorder}\NormalTok{(word, n))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Joining, by = c("word", "sentiment")
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+ \CommentTok{#visualize nrc sentiment word count}
+    \KeywordTok{ggplot}\NormalTok{(nrc_sent, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{word2,}\DataTypeTok{y=}\NormalTok{n, }\DataTypeTok{fill=}\NormalTok{sentiment)) }\OperatorTok{+}
+\StringTok{    }\KeywordTok{geom_col}\NormalTok{(}\DataTypeTok{show.legend =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{+}
+\StringTok{    }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\NormalTok{sentiment, }\DataTypeTok{scales=}\StringTok{"free"}\NormalTok{) }\OperatorTok{+}
+\StringTok{    }\KeywordTok{coord_flip}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\StringTok{    }\KeywordTok{labs}\NormalTok{(}
+      \DataTypeTok{title =} \StringTok{"Sentiment Word counts for NRC"}\NormalTok{,}
+      \DataTypeTok{x =} \StringTok{"Words"}
+\NormalTok{    )}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-27-1.pdf}
+
+We plotted the sentiment by airline for NRC and we can see that Virgin
+America has more positive sentiments than United airlines.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+ \CommentTok{#NRC sentiment analysis of document by airline}
+\NormalTok{nrc_overall <-}\StringTok{ }\KeywordTok{select}\NormalTok{(tidy_airline_stop_words, }\OperatorTok{-}\NormalTok{sentiment) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{inner_join}\NormalTok{(}\KeywordTok{get_sentiments}\NormalTok{(}\StringTok{"nrc"}\NormalTok{)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(airline,sentiment) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{spread}\NormalTok{(sentiment, n) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{summed_sentiment =}\NormalTok{ (positive) }\OperatorTok{-}\StringTok{ }\NormalTok{(negative))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Joining, by = "word"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#visualize sentiment by airline}
+\KeywordTok{ggplot}\NormalTok{(nrc_overall,}
+  \KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ airline, }\DataTypeTok{y=}\NormalTok{ summed_sentiment, }\DataTypeTok{fill =} \KeywordTok{as.factor}\NormalTok{(airline))}
+\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_col}\NormalTok{(}\DataTypeTok{show.legend =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_flip}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}
+    \DataTypeTok{title =} \StringTok{"Overall sentiment by Airline"}\NormalTok{,}
+    \DataTypeTok{x =} \StringTok{"Airline"}\NormalTok{,}
+    \DataTypeTok{y =} \StringTok{"Summed Sentiment"}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-28-1.pdf}
+
+\hypertarget{comparing-the-bing-sentiment-to-the-nrc-sentiment-added}{%
+\subsubsection{Comparing the bing sentiment to the nrc sentiment
+added}\label{comparing-the-bing-sentiment-to-the-nrc-sentiment-added}}
+
+The output shows us that for the bing dictionary United airline has a
+negative overall sentiment while Virgin America airlines had just a
+small overall positive sentiment. The NRC shows that both United and
+Virgin America airlines had positive overall sentiment.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#create the bing dataset}
+\NormalTok{bing_c <-}\StringTok{ }\KeywordTok{select}\NormalTok{(tidy_airline_stop_words, }\OperatorTok{-}\NormalTok{sentiment) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{inner_join}\NormalTok{(}\KeywordTok{get_sentiments}\NormalTok{(}\StringTok{"bing"}\NormalTok{)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{method =} \StringTok{"Bing et al."}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Joining, by = "word"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#create the nrc dataset}
+\NormalTok{nrc_c <-}\StringTok{ }\KeywordTok{select}\NormalTok{(tidy_airline_stop_words, }\OperatorTok{-}\NormalTok{sentiment) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{inner_join}\NormalTok{(}\KeywordTok{get_sentiments}\NormalTok{(}\StringTok{"nrc"}\NormalTok{)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(sentiment }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"positive"}\NormalTok{, }\StringTok{"negative"}\NormalTok{)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{method =} \StringTok{"NRC"}\NormalTok{) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Joining, by = "word"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#bind the two variables}
+\NormalTok{bing_nrc <-}\StringTok{ }\KeywordTok{bind_rows}\NormalTok{(bing_c,nrc_c)}
+
+
+\CommentTok{#spread the dataset based on sentiment and perform overall sentiment calculation}
+\NormalTok{bing_nrc <-}\StringTok{ }\NormalTok{bing_nrc }\OperatorTok{%>%}
+\StringTok{            }\KeywordTok{count}\NormalTok{(method, airline , sentiment) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{spread}\NormalTok{(sentiment, n, }\DataTypeTok{fill =} \DecValTok{0}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{sentiment =}\NormalTok{ positive }\OperatorTok{-}\StringTok{ }\NormalTok{negative)}
+
+\CommentTok{#plot the data  }
+\NormalTok{bing_nrc }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(airline, sentiment, }\DataTypeTok{fill =}\NormalTok{ airline)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_col}\NormalTok{(}\DataTypeTok{show.legend =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\NormalTok{method, }\DataTypeTok{ncol =} \DecValTok{1}\NormalTok{, }\DataTypeTok{scales =} \StringTok{"free"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-29-1.pdf}
+
+\hypertarget{comparing-the-original-sentiment-to-the-new-sentiment-added}{%
+\subsubsection{Comparing the original sentiment to the new sentiment
+added}\label{comparing-the-original-sentiment-to-the-new-sentiment-added}}
+
+We will be comparing the sentiment in the initial dataset to the new one
+created with the bing dictionary. We used innerjoin to match all the
+dataset we have in the bing sentiment data to the original since due to
+the usage of stop words and other data processing we have dropped some
+rows. So we want to see rows in the new sentiment data that does not
+have the same sentiment as the original dataset. We created a final
+dataset for all non matching rows of data between the two datasets.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{select}\NormalTok{(tidy_airline_stop_words, sentiment,id,tweet_id,word) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{count}\NormalTok{(word, sentiment,tweet_id,id, }\DataTypeTok{sort=}\OtherTok{TRUE}\NormalTok{)}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ungroup}\NormalTok{() ->}\StringTok{ }\NormalTok{original_sentiment }
+\NormalTok{original_sentiment <-}\StringTok{  }\NormalTok{original_sentiment }\OperatorTok{%>%}\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{method =} \StringTok{"Original"}\NormalTok{)}
+\NormalTok{airline_new_bing <-airline_new_bing }\OperatorTok{%>%}\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{method =} \StringTok{"New"}\NormalTok{)}
+\CommentTok{#joining original sentiment in data to the sentiment from bing dictionary}
+\NormalTok{original_vs_bing <-}\StringTok{ }\KeywordTok{inner_join}\NormalTok{(original_sentiment, airline_new_bing, }\DataTypeTok{by=}\KeywordTok{c}\NormalTok{(}\StringTok{"word"}\NormalTok{,}\StringTok{"tweet_id"}\NormalTok{))}
+\CommentTok{#selecting all rows where sentiment not the same for the two methods}
+\NormalTok{non_matching_sent <-}\StringTok{ }\NormalTok{original_vs_bing }\OperatorTok{%>%}\StringTok{ }\KeywordTok{filter}\NormalTok{(sentiment.x }\OperatorTok{!=}\StringTok{ }\NormalTok{sentiment.y)}
+\NormalTok{non_matching_sent}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 772 x 10
+##    word  sentiment.x tweet_id  id.x   n.x method.x sentiment.y  id.y   n.y
+##    <chr> <chr>       <chr>    <int> <int> <chr>    <chr>       <int> <int>
+##  1 cons~ negative    Tr_twee~   885     2 Original positive      885     2
+##  2 corr~ neutral     Tr_twee~  2147     2 Original positive     2147     2
+##  3 elite neutral     Tr_twee~  1492     2 Original positive     1492     2
+##  4 expi~ neutral     Tr_twee~   143     2 Original negative      143     2
+##  5 fine  negative    Tr_twee~  1033     2 Original positive     1033     2
+##  6 gold  negative    Tr_twee~  1006     2 Original positive     1006     2
+##  7 help~ negative    Tr_twee~  3150     2 Original positive     3150     2
+##  8 honor neutral     Tr_twee~  1511     2 Original positive     1511     2
+##  9 loya~ negative    Tr_twee~  2450     2 Original positive     2450     2
+## 10 pret~ negative    Tr_twee~   630     2 Original positive      630     2
+## # ... with 762 more rows, and 1 more variable: method.y <chr>
+\end{verbatim}
+
+\hypertarget{plotting-the-sentiments-over-time}{%
+\subsubsection{Plotting the sentiments over
+time}\label{plotting-the-sentiments-over-time}}
+
+We created a new variable called daily\_sent which holds the sentiment
+trend per day. We used the anytime function to convert the
+tweet\_created column to a time object. We then used the time formatting
+as.POSIXct to format the date and extracted the day from the dataset
+into a new column called day. We then performed a calculation
+subtracting negative sentiments from positive this was assigned to the
+variable daily\_sent. We assigned this new dataset into the ggplot
+function while filtering for values greater than or lesser than -2 or
+greater than zero. The daily trend for both airlines seems to follow a
+gradual and descending trend between 18th and 22nd of February and
+starts picking up from 23rd to the 24th.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# plot of sentiment over time & automatically choose a method to model the change}
+\KeywordTok{select}\NormalTok{(tidy_airline_stop_words, }\OperatorTok{-}\NormalTok{sentiment) }\OperatorTok{%>%}\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{time_conv =} \KeywordTok{anytime}\NormalTok{(tidy_airline_stop_words}\OperatorTok{$}\NormalTok{tweet_created)) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{na.omit}\NormalTok{() }\OperatorTok{%>%}\StringTok{ }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{day =}\KeywordTok{format}\NormalTok{(}\KeywordTok{as.POSIXct}\NormalTok{(tweet_created,}\DataTypeTok{format=}\StringTok{"%Y-%m-%d %H:%M:%OS"}\NormalTok{),}\StringTok{"%d"}\NormalTok{)) }\OperatorTok{%>%}\StringTok{  }\KeywordTok{inner_join}\NormalTok{(}\KeywordTok{get_sentiments}\NormalTok{(}\StringTok{"bing"}\NormalTok{)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(airline,sentiment,day) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{spread}\NormalTok{(sentiment, n) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{summed_sentiment =}\NormalTok{ positive }\OperatorTok{-}\StringTok{ }\NormalTok{negative) }\OperatorTok{%>%}\StringTok{  }\KeywordTok{na.omit}\NormalTok{()->}\StringTok{ }\NormalTok{daily_sent}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Joining, by = "word"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{daily_sent }\OperatorTok{%>%}\StringTok{ }\KeywordTok{filter}\NormalTok{(summed_sentiment }\OperatorTok{>}\DecValTok{0} \OperatorTok{|}\StringTok{ }\NormalTok{summed_sentiment }\OperatorTok{<}\StringTok{ }\DecValTok{-2}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{as.numeric}\NormalTok{(day), }\DataTypeTok{y =}\NormalTok{ summed_sentiment)) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\CommentTok{# add points to our plot, color-coded by airline}
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{color =}\NormalTok{ airline))}\OperatorTok{+}\StringTok{ }
+\StringTok{  }\CommentTok{# pick a method & fit a model }
+\StringTok{  }\KeywordTok{geom_smooth}\NormalTok{(}\DataTypeTok{method =} \StringTok{"auto"}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{   }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Daily Sentiments from February 17th till 24th 2015."}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+\end{verbatim}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-31-1.pdf}
+
+\hypertarget{task-c-topic-modelling}{%
+\section{Task C: Topic Modelling}\label{task-c-topic-modelling}}
+
+\hypertarget{creating-a-document-term-matrix}{%
+\subsubsection{creating a Document Term
+Matrix}\label{creating-a-document-term-matrix}}
+
+To commence the topic modeling we need to create a document term matrix.
+This will hold the unique word counts in our corpus. The output below
+shows we have DocumentTermMatrix object with 3260 documents(rows in the
+dtm) and 5861 unique terms(columns in the dtm), we have a Non-sparse to
+sparse ratio of approximately 0.11\% which is negligible and a sparsity
+of 100\%.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tidy_airline_stop_words }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(word,id) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(n))}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{cast_dtm}\NormalTok{(id,word,n)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## <<DocumentTermMatrix (documents: 3260, terms: 5861)>>
+## Non-/sparse entries: 22284/19084576
+## Sparsity           : 100%
+## Maximal term length: 39
+## Weighting          : term frequency (tf)
+\end{verbatim}
+
+\hypertarget{converting-the-document-term-matrix-to-a-readable-matrix}{%
+\subsubsection{converting the document term matrix to a readable
+matrix}\label{converting-the-document-term-matrix-to-a-readable-matrix}}
+
+From the output above we can see that we do not have a readable format
+of our dataset, the code only return the metadata of our
+DocumentTermMatrix. We will be using the function cast\_dtm to convert
+the DTM to a matrix or dataframe like object where every column is of
+the same type. The matrix can be indexed using the {[}row,column{]}
+format. A single row in a document term matrix represents a document
+which in our case is a tweet and the column is the unique word or term
+used across all documents in the corpus. The values in the DTM are the
+count of tokens or word use in each document. The output below shows
+that we have mostly zero which is what we refer to as a sparse dtm. The
+output below shows that for our tweet with id 1105 worst was used 6
+times, which means this user was quite angry with the services provided.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tidy_airline_stop_words }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(word,id) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(n))}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{cast_dtm}\NormalTok{(id,word,n)}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{as.matrix}\NormalTok{()->}\StringTok{ }\NormalTok{airline_dtm}
+\NormalTok{airline_dtm[}\DecValTok{1}\OperatorTok{:}\DecValTok{4}\NormalTok{, }\DecValTok{1}\OperatorTok{:}\DecValTok{10}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       Terms
+## Docs   worst outsource 0016 amp baby broken delayed fee flight gate
+##   1105     6         0    0   0    0      0       0   0      0    0
+##   1012     0         4    0   0    0      0       0   0      0    0
+##   729      0         0    3   0    0      0       0   0      0    0
+##   2137     0         0    0   3    0      0       0   0      0    0
+\end{verbatim}
+
+\hypertarget{running-topic-model}{%
+\subsubsection{running topic model}\label{running-topic-model}}
+
+The reason for converting our data into a dtm is because Topic modeling
+algorithms such as Latent Dirichlet Allocation takes data in with the
+DTM format. We will be using the function LDA() from the package
+topicmodels() to perform this modeling. The function takes 4 inputs as
+seen below, the dtm, the number of topics to model k, the method for
+modeling which we used the Gibbs sampler method in this case and setting
+our simulation seed which makes our results repeatable. The function
+glimpse() was used to see what is encoded within the output of the LDA
+run. The output shows us information such as the k used for the
+modeling, the number of terms, documents and also the range of the beta
+output.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Run an LDA with 2 topics and a Gibbs sampler}
+\NormalTok{lda_out2 <-}\StringTok{ }\KeywordTok{LDA}\NormalTok{(}
+\NormalTok{  airline_dtm,}
+  \DataTypeTok{k =} \DecValTok{2}\NormalTok{,}
+  \DataTypeTok{method =} \StringTok{"Gibbs"}\NormalTok{,}
+  \DataTypeTok{control =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{seed =} \DecValTok{42}\NormalTok{)}
+\NormalTok{)}
+
+\CommentTok{#Using glimpse to view content of the lda_out}
+\KeywordTok{glimpse}\NormalTok{(lda_out2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Formal class 'LDA_Gibbs' [package "topicmodels"] with 16 slots
+##   ..@ seedwords      : NULL
+##   ..@ z              : int [1:22854] 1 1 1 1 1 1 1 2 2 2 ...
+##   ..@ alpha          : num 25
+##   ..@ call           : language LDA(x = airline_dtm, k = 2, method = "Gibbs", control = list(seed = 42))
+##   ..@ Dim            : int [1:2] 3260 5861
+##   ..@ control        :Formal class 'LDA_Gibbscontrol' [package "topicmodels"] with 14 slots
+##   ..@ k              : int 2
+##   ..@ terms          : chr [1:5861] "worst" "outsource" "0016" "amp" ...
+##   ..@ documents      : chr [1:3260] "1105" "1012" "729" "2137" ...
+##   ..@ beta           : num [1:2, 1:5861] -5.18 -11.7 -7.76 -11.7 -8.26 ...
+##   ..@ gamma          : num [1:3260, 1:2] 0.54 0.552 0.534 0.493 0.557 ...
+##   ..@ wordassignments:List of 5
+##   .. ..$ i   : int [1:22284] 1 1 1 1 1 1 1 1 2 2 ...
+##   .. ..$ j   : int [1:22284] 1 19 48 100 1742 1808 4062 4434 2 958 ...
+##   .. ..$ v   : num [1:22284] 1 1 2 2 2 1 1 2 1 1 ...
+##   .. ..$ nrow: int 3260
+##   .. ..$ ncol: int 5861
+##   .. ..- attr(*, "class")= chr "simple_triplet_matrix"
+##   ..@ loglikelihood  : num -171122
+##   ..@ iter           : int 2000
+##   ..@ logLiks        : num(0) 
+##   ..@ n              : int 22854
+\end{verbatim}
+
+\hypertarget{creating-a-dataframe-from-the-lda-output}{%
+\subsubsection{creating a dataframe from the LDA
+output}\label{creating-a-dataframe-from-the-lda-output}}
+
+We will evaluate the model output by using the tidy() function, we
+specify the required arguments. The output shows us a dictionary of all
+the words in our corpus sorted according to the probability of them
+occurring in a particular topic.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Tidy the matrix of word probabilities}
+\NormalTok{lda_topics2 <-}\StringTok{ }\NormalTok{lda_out2 }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{tidy}\NormalTok{(}\DataTypeTok{matrix=} \StringTok{"beta"}\NormalTok{)}
+\CommentTok{# Arrange the topics by word probabilities in descending order}
+\NormalTok{lda_topics2 }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(beta))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 11,722 x 3
+##    topic term        beta
+##    <int> <chr>      <dbl>
+##  1     2 flight    0.0701
+##  2     1 service   0.0182
+##  3     1 time      0.0150
+##  4     1 customer  0.0146
+##  5     2 cancelled 0.0140
+##  6     2 delayed   0.0123
+##  7     1 bag       0.0122
+##  8     2 flights   0.0122
+##  9     2 plane     0.0119
+## 10     1 amp       0.0116
+## # ... with 11,712 more rows
+\end{verbatim}
+
+\hypertarget{plotting-and-interpreting-the-output-of-the-modelling}{%
+\subsubsection{plotting and interpreting the output of the
+modelling}\label{plotting-and-interpreting-the-output-of-the-modelling}}
+
+The output below shows the first topic connected to words related to
+User Service Experience like service, customer, bag, wait and baggage
+occurring together with a high probability. The second topic shows words
+related to issues with the flight itself with words like flight,
+cancelled, delayed and waiting occurring together. Based on the output
+we will be renaming the topics as follows; Topic 1 - Service Experience
+Topic 2 - Flight Experience
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Select the top 15 terms by topic and reorder term}
+\NormalTok{word_probability <-}\StringTok{ }\NormalTok{lda_topics2 }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(topic) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{top_n}\NormalTok{(}\DecValTok{15}\NormalTok{,beta) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{ungroup}\NormalTok{() }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{term2 =} \KeywordTok{fct_reorder}\NormalTok{(term, beta))}
+
+\CommentTok{# Plot word_probability, color and facet based on topic}
+\KeywordTok{ggplot}\NormalTok{(}
+\NormalTok{  word_probability, }
+  \KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ term2, }\DataTypeTok{y=}\NormalTok{beta, }\DataTypeTok{fill =} \KeywordTok{as.factor}\NormalTok{(topic))}
+\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_col}\NormalTok{(}\DataTypeTok{show.legend =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\NormalTok{topic, }\DataTypeTok{scales =} \StringTok{"free"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_flip}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-36-1.pdf}
+
+\hypertarget{modelling-for-3-topicsk3}{%
+\subsubsection{Modelling for 3
+topics(k=3)}\label{modelling-for-3-topicsk3}}
+
+Topic modeling like other unsupervised algorithm is subjective and we
+would like to find a way to validate if we have selected the right
+amount of topics for our corpus. This would be done by performing
+another topic modeling using the Gibbs sampler and 3 topics. We compare
+the output from the two models. The output shows we still have similar
+words topping the probability a ggplot would help visualize this better.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Run an LDA with 3 topics and a Gibbs sampler}
+\NormalTok{lda_out3 <-}\StringTok{ }\KeywordTok{LDA}\NormalTok{(}
+\NormalTok{  airline_dtm,}
+  \DataTypeTok{k =} \DecValTok{3}\NormalTok{,}
+  \DataTypeTok{method =} \StringTok{"Gibbs"}\NormalTok{,}
+  \DataTypeTok{control =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{seed =} \DecValTok{42}\NormalTok{)}
+\NormalTok{)}
+
+\CommentTok{#Using glimpse to view content of the lda_out}
+\KeywordTok{glimpse}\NormalTok{(lda_out3)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Formal class 'LDA_Gibbs' [package "topicmodels"] with 16 slots
+##   ..@ seedwords      : NULL
+##   ..@ z              : int [1:22854] 3 3 3 3 3 3 1 3 3 3 ...
+##   ..@ alpha          : num 16.7
+##   ..@ call           : language LDA(x = airline_dtm, k = 3, method = "Gibbs", control = list(seed = 42))
+##   ..@ Dim            : int [1:2] 3260 5861
+##   ..@ control        :Formal class 'LDA_Gibbscontrol' [package "topicmodels"] with 14 slots
+##   ..@ k              : int 3
+##   ..@ terms          : chr [1:5861] "worst" "outsource" "0016" "amp" ...
+##   ..@ documents      : chr [1:3260] "1105" "1012" "729" "2137" ...
+##   ..@ beta           : num [1:3, 1:5861] -11.33 -11.32 -4.79 -7.39 -11.32 ...
+##   ..@ gamma          : num [1:3260, 1:3] 0.296 0.391 0.391 0.277 0.29 ...
+##   ..@ wordassignments:List of 5
+##   .. ..$ i   : int [1:22284] 1 1 1 1 1 1 1 1 2 2 ...
+##   .. ..$ j   : int [1:22284] 1 19 48 100 1742 1808 4062 4434 2 958 ...
+##   .. ..$ v   : num [1:22284] 3 1 3 3 3 1 3 3 1 2 ...
+##   .. ..$ nrow: int 3260
+##   .. ..$ ncol: int 5861
+##   .. ..- attr(*, "class")= chr "simple_triplet_matrix"
+##   ..@ loglikelihood  : num -165660
+##   ..@ iter           : int 2000
+##   ..@ logLiks        : num(0) 
+##   ..@ n              : int 22854
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Tidy the matrix of word probabilities}
+\NormalTok{lda_topics3 <-}\StringTok{ }\NormalTok{lda_out3 }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{tidy}\NormalTok{(}\DataTypeTok{matrix=} \StringTok{"beta"}\NormalTok{)}
+\CommentTok{# Arrange the topics by word probabilities in descending order}
+\NormalTok{lda_topics3 }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(beta))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 17,583 x 3
+##    topic term        beta
+##    <int> <chr>      <dbl>
+##  1     2 flight    0.103 
+##  2     1 service   0.0263
+##  3     1 customer  0.0211
+##  4     2 cancelled 0.0205
+##  5     1 time      0.0199
+##  6     2 delayed   0.0179
+##  7     2 flights   0.0175
+##  8     3 amp       0.0170
+##  9     1 plane     0.0153
+## 10     3 bag       0.0149
+## # ... with 17,573 more rows
+\end{verbatim}
+
+\hypertarget{interpreting-the-topic-models-using-3-topics}{%
+\subsubsection{Interpreting the Topic Models using 3
+topics}\label{interpreting-the-topic-models-using-3-topics}}
+
+The output below shows the first topic connected to words related to
+User Service Experience like service, customer, bag, wait and baggage
+occurring together with a high probability. The second topic shows words
+related to issues with the flight itself with words like flight,
+canceled, delayed and waiting occurring together. The third topic has
+words like dm, email, website, luggage,lost occurring together which are
+words related to the digital aspect of the airline. Based on the output
+we will be renaming the topics as follows; Topic 1 - Service Experience
+Topic 2 - Flight Experience Topic 3 - Digital Experience
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Select the top 15 terms by topic and reorder term}
+\NormalTok{word_probability <-}\StringTok{ }\NormalTok{lda_topics3 }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(topic) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{top_n}\NormalTok{(}\DecValTok{15}\NormalTok{,beta) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{ungroup}\NormalTok{() }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{term2 =} \KeywordTok{fct_reorder}\NormalTok{(term, beta))}
+
+\CommentTok{# Plot word_probs2, color and facet based on topic}
+\KeywordTok{ggplot}\NormalTok{(}
+\NormalTok{  word_probability, }
+  \KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ term2, }\DataTypeTok{y=}\NormalTok{beta, }\DataTypeTok{fill =} \KeywordTok{as.factor}\NormalTok{(topic))}
+\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_col}\NormalTok{(}\DataTypeTok{show.legend =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\NormalTok{topic, }\DataTypeTok{scales =} \StringTok{"free"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_flip}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-38-1.pdf}
+
+\hypertarget{comparing-differences-in-betaword-probability-between-topic}{%
+\subsubsection{Comparing differences in beta(word probability) between
+Topic}\label{comparing-differences-in-betaword-probability-between-topic}}
+
+We want to explore the terms that have the greatest differences in their
+word probability between topic 1 and topic 2. We will be using the log
+ratio of the two to perform this task using the formular:
+log(beta1/beta2). When we look at the odds of an event, we can see that
+we have two ratios one of them is usually from 0-1 and the other 1-
+infinity. This asymmetry makes it difficult to compare one odd against
+another directly. This can be solved by taking the logs of both odds
+which makes the outcome symmetrical which we did below.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{beta_spread <-}\StringTok{ }\NormalTok{lda_topics2 }\OperatorTok{%>%}
+\StringTok{  }\CommentTok{#using the paste0 and mutate function to manipulate the values in the topic columns by adding extra strings}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{topic =} \KeywordTok{paste0}\NormalTok{(}\StringTok{"topic"}\NormalTok{, topic)) }\OperatorTok{%>%}
+\StringTok{  }\CommentTok{#Using the spread function to change the shape of our data based on the contents of the topic column}
+\StringTok{  }\KeywordTok{spread}\NormalTok{(topic, beta) }\OperatorTok{%>%}
+\StringTok{  }\CommentTok{#filtering for values having a beta value of greater than 0.001 for either topic 1 or topic 2}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(topic1 }\OperatorTok{>}\StringTok{ }\FloatTok{0.001} \OperatorTok{|}\StringTok{ }\NormalTok{topic2 }\OperatorTok{>}\StringTok{ }\FloatTok{0.001}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\CommentTok{#using the mutate function to perform the numerical operation}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{logratio =} \KeywordTok{log2}\NormalTok{(topic2 }\OperatorTok{/}\StringTok{ }\NormalTok{topic1))}
+\NormalTok{beta_spread}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 322 x 4
+##    term      topic1     topic2 logratio
+##    <chr>      <dbl>      <dbl>    <dbl>
+##  1 1     0.00544    0.00000829    -9.36
+##  2 10    0.00294    0.000174      -4.08
+##  3 100   0.00160    0.00000829    -7.59
+##  4 15    0.00000836 0.00208        7.96
+##  5 1k    0.00000836 0.00175        7.71
+##  6 1st   0.00185    0.000671      -1.46
+##  7 20    0.00000836 0.00324        8.60
+##  8 200   0.00000836 0.00125        7.23
+##  9 2015  0.00101    0.00000829    -6.93
+## 10 25    0.00118    0.000257      -2.20
+## # ... with 312 more rows
+\end{verbatim}
+
+\hypertarget{plot-of-differences-in-beta-between-topic}{%
+\subsubsection{plot of differences in beta between
+Topic}\label{plot-of-differences-in-beta-between-topic}}
+
+The output below shows that more common in topic 2 are
+flight,cancelled,flights,hours,waiting. Topic 1 is defined by words like
+customer, service, agent,flying. This validates the results of our topic
+modeling using 2 topics performed above and the naming convention we
+used to encode the topics.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#load the variable beta_spread group by its logratio greater than zero or not}
+\NormalTok{beta_spread }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(logratio }\OperatorTok{<}\StringTok{ }\DecValTok{0}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\CommentTok{#pick the top 15 values using the absolute values of the logratio}
+\StringTok{  }\KeywordTok{top_n}\NormalTok{(}\DecValTok{15}\NormalTok{, }\KeywordTok{abs}\NormalTok{(logratio)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{ungroup}\NormalTok{() }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\CommentTok{#order by the terms logratio}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{term =} \KeywordTok{reorder}\NormalTok{(term, logratio)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(term,logratio, }\DataTypeTok{fill =}\NormalTok{ logratio }\OperatorTok{<}\StringTok{ }\DecValTok{0}\NormalTok{)) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_col}\NormalTok{(}\DataTypeTok{show.legend =} \OtherTok{FALSE}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_flip}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{"log odds ratio for topic1 vs topic 2"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_fill_discrete}\NormalTok{(}\DataTypeTok{name=}\StringTok{""}\NormalTok{, }\DataTypeTok{labels=}\KeywordTok{c}\NormalTok{(}\StringTok{"Topic 1"}\NormalTok{,}\StringTok{"Topic 2"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-40-1.pdf}
+
+\hypertarget{task-d-further-exploration}{%
+\section{Task D: Further exploration}\label{task-d-further-exploration}}
+
+\hypertarget{word-network}{%
+\subsubsection{word network}\label{word-network}}
+
+We used the unnest function to break our text into component words and
+used the argument (token =ngrams) which specifies pairs of words used
+together and we set this as n=2. We see words like cancelled flights
+occuring together. The words customer service also occurs together
+meaning most of the tweets are about customer issues. We also see gate,
+airport and airplane occuring together.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#unnest the airline data using the argument token ngrams}
+\NormalTok{word_connect <-}\StringTok{ }\NormalTok{airline_data }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{unnest_tokens}\NormalTok{(word,text,}\DataTypeTok{token=}\StringTok{"ngrams"}\NormalTok{, }\DataTypeTok{n =} \DecValTok{2}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{    }\KeywordTok{anti_join}\NormalTok{(stop_words)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Joining, by = "word"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#format the string and use space as the separator}
+\NormalTok{word_connect_separated <-}\StringTok{ }\NormalTok{word_connect }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{separate}\NormalTok{(word,}\KeywordTok{c}\NormalTok{(}\StringTok{"word1"}\NormalTok{,}\StringTok{"word2"}\NormalTok{), }\DataTypeTok{sep =} \StringTok{" "}\NormalTok{)}
+
+\CommentTok{#get a count for word1 and word2}
+\NormalTok{word_connect_filtered <-}\StringTok{ }\NormalTok{word_connect_separated }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{count}\NormalTok{(word1,word2,}\DataTypeTok{sort =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{word_connect_count <-}\StringTok{ }\NormalTok{word_connect_filtered }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(word1,word2,}\DataTypeTok{sort =} \OtherTok{TRUE}\NormalTok{)}
+
+\CommentTok{#plotting the data}
+\NormalTok{word_connect_filtered }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(n }\OperatorTok{>=}\StringTok{ }\DecValTok{24}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{graph_from_data_frame}\NormalTok{() }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggraph}\NormalTok{(}\DataTypeTok{layout =} \StringTok{"fr"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\CommentTok{#remove the comment in the geom_edge_link to see connections between words}
+\StringTok{ }\CommentTok{#geom_edge_link(aes(edge_alpha = n, edge_width = n)) +}
+\StringTok{  }\KeywordTok{geom_node_point}\NormalTok{(}\DataTypeTok{color =} \StringTok{"darkslategray4"}\NormalTok{, }\DataTypeTok{size =} \DecValTok{3}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_node_text}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{label=}\NormalTok{name), }\DataTypeTok{vjust =} \FloatTok{1.8}\NormalTok{, }\DataTypeTok{size =}\DecValTok{3}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Word Network: Airline Tweets"}\NormalTok{, }\DataTypeTok{subtitle =} \StringTok{"Text mining twitter data "}\NormalTok{,}
+       \DataTypeTok{x =}\StringTok{""}\NormalTok{, }\DataTypeTok{y=}\StringTok{""}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-41-1.pdf}
+
+\hypertarget{comparing-frequency-of-words-for-united-vs-virgin}{%
+\subsubsection{Comparing frequency of words for united vs
+virgin}\label{comparing-frequency-of-words-for-united-vs-virgin}}
+
+We started by calculating the word frequencies for the individual
+airlines. We grouped by airline and count how many times a word was used
+by the users of each airlines. We used a left join to add a column of
+the total number of words used by users of the two airlines. This was
+then used to calculate the frequency for each airline. We used spread to
+to change the shape of the dataset using the groups in the airline
+column, null values were omitted and we renamed the columns. We plotted
+the frequency using ggplot and used the geom\_jitter() function to avoid
+overplotting of the dataset. The check\_overlap argument was set as TRUE
+to avoid text labels printing out on top of one another.
+
+Words near the line in our plot were the words that were used with
+approximately equal frequencies by the users of both airlines. The words
+far away from the line are used much more by users on either groups
+depending on their location relative to the line. The Words, hashtags,
+and usernames that appear in this plot are ones that we have both used
+at least once in tweets.
+
+Finally, the plot shows us that United Airline users were more likely to
+miss their flights and have a bad experience while the users of Virgin
+America were likely to have a good experience.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#create variable frequency}
+\NormalTok{frequency <-}\StringTok{ }\NormalTok{tidy_airline_stop_words }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(airline) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{count}\NormalTok{(word, }\DataTypeTok{sort =} \OtherTok{TRUE}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{left_join}\NormalTok{(tidy_airline_stop_words }\OperatorTok{%>%}
+\StringTok{              }\KeywordTok{group_by}\NormalTok{(airline) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{              }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{total=}\KeywordTok{n}\NormalTok{())) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{freq =}\NormalTok{ n}\OperatorTok{/}\NormalTok{total) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(airline, word, freq) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{spread}\NormalTok{(airline,freq) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(United,}\StringTok{"Virgin America"}\NormalTok{) }\OperatorTok{%>%}\StringTok{  }\KeywordTok{na.omit}\NormalTok{() }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `summarise()` ungrouping output (override with `.groups` argument)
+\end{verbatim}
+
+\begin{verbatim}
+## Joining, by = "airline"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{colnames}\NormalTok{(frequency)[}\DecValTok{3}\NormalTok{] <-}\StringTok{ "VirginAmerica"} 
+
+\CommentTok{#plot word frequency}
+\KeywordTok{ggplot}\NormalTok{(frequency, }\KeywordTok{aes}\NormalTok{(United,VirginAmerica)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_jitter}\NormalTok{(}\DataTypeTok{alpha =} \FloatTok{0.1}\NormalTok{, }\DataTypeTok{size =} \FloatTok{2.5}\NormalTok{, }\DataTypeTok{width =} \FloatTok{0.25}\NormalTok{, }\DataTypeTok{height =} \FloatTok{0.25}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_text}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{label =}\NormalTok{ word), }\DataTypeTok{check_overlap =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{vjust =} \FloatTok{1.5}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_log10}\NormalTok{(}\DataTypeTok{labels =} \KeywordTok{percent_format}\NormalTok{()) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_y_log10}\NormalTok{(}\DataTypeTok{labels =} \KeywordTok{percent_format}\NormalTok{()) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_abline}\NormalTok{(}\DataTypeTok{color =} \StringTok{"red"}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Frequency of words used by United Airlines Users and Virgin America Users"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Transformation introduced infinite values in continuous y-axis
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'haven’t' in 'mbcsToSbcs': dot substituted for <e2>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'haven’t' in 'mbcsToSbcs': dot substituted for <80>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'haven’t' in 'mbcsToSbcs': dot substituted for <99>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'i’m' in 'mbcsToSbcs': dot substituted for <e2>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'i’m' in 'mbcsToSbcs': dot substituted for <80>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'i’m' in 'mbcsToSbcs': dot substituted for <99>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'it’s' in 'mbcsToSbcs': dot substituted for <e2>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'it’s' in 'mbcsToSbcs': dot substituted for <80>
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
+## conversion failure on 'it’s' in 'mbcsToSbcs': dot substituted for <99>
+\end{verbatim}
+
+\includegraphics{Tweet-Mining_files/figure-latex/unnamed-chunk-42-1.pdf}
+
+\end{document}
